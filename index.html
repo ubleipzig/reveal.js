@@ -247,7 +247,7 @@ Merge made by the 'recursive' strategy.
                     <li class="fragment">
                         Commits zusammenfassen
                         <pre>
-$# git rebase
+$# git rebase --interactive
                         </pre>
                     </li>
                     <li class="fragment">
@@ -268,7 +268,7 @@ $# git push
                         Github-Repository von finc/vufind und vufind-org/vufind hinzufügen
                         <pre>
 $# git remote add finc git@github.com:finc/vufind.git
-$# git remote add finc git@github.com:vufind-org/vufind.git
+$# git remote add vufind-org git@github.com:vufind-org/vufind.git
                         </pre>
                     <li class="fragment" data-fragment-index="1">
                         Branch master aus vufind-org/vufind holen
@@ -277,19 +277,19 @@ $# git fetch vufind-org master
 Von github.com:vufind-org/vufind
  * branch            master     -> FETCH_HEAD
                         </pre>
-                    </li>
-                    <li class="fragment" data-fragment-index="2">
-                        neuen Branch aus vufind-org/master erzeugen
-                        <pre>
-$# git checkout -b feature_5678 vufind-org/master
-Branch feature_5678 konfiguriert zum Folgen von Remote-Branch master von vufind-org.
-Gewechselt zu einem neuem Branch 'feature_5678'
-                        </pre>
-                    </li>
                 </ul>
                 <ul>
+                    </li>
+                    <li class="fragment" data-fragment-index="2">
+                        neuen Pullrequest Branch aus vufind-org/master erzeugen
+                        <pre>
+$# git checkout -b pullrequest_5678 vufind-org/master
+Branch pullrequest_5678 konfiguriert zum Folgen von Remote-Branch master von vufind-org.
+Gewechselt zu einem neuem Branch 'pullrequest_5678'
+                        </pre>
+                    </li>
                     <li class="fragment" data-fragment-index=3">
-                        Feature-Commit in den Branch feature_5678 überführen
+                        Feature-Commit in den Branch pullrequest_5678 überführen
                         <pre>
 $# git cherry-pick origin/master
 [finc_master ba98701] implemented feature 5678
@@ -303,7 +303,7 @@ $# git cherry-pick origin/master
                     <li class="fragment" data-fragment-index="4">
                         Commit in den master des Github-Reposiories pushen
                         <pre>
-$# git push finc feature_5678
+$# git push finc pullrequest_5678
 Counting objects: 21, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (5/5), done.
