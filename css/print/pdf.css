@@ -148,7 +148,7 @@ ul, ol, div, p {
 	        transform: none !important;
 }
 .reveal section.stack {
-	margin: 0 !important;
+	margin: 0 0 0 0 !important;
 	padding: 0 !important;
 	page-break-after: avoid !important;
 	height: auto !important;
@@ -187,4 +187,8 @@ ul, ol, div, p {
 }
 .reveal small a {
 	font-size: 16pt !important;
+}
+
+.reveal .header {
+    display: none;
 }
