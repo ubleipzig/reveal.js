@@ -563,8 +563,7 @@ body {
 .reveal.page .slides section {
   padding: 30px;
   min-height: 700px;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box; }
+  box-sizing: border-box; }
 
 .reveal.page .slides section.past {
   z-index: 12; }
@@ -885,8 +884,7 @@ body {
     overflow: hidden;
     visibility: visible !important;
     cursor: pointer;
-    -moz-box-sizing: border-box;
-         box-sizing: border-box; }
+    box-sizing: border-box; }
   .reveal.overview .slides section:hover, .reveal.overview .slides section.present {
     outline: 10px solid rgba(150, 150, 150, 0.4);
     outline-offset: 10px; }
@@ -1006,8 +1004,7 @@ body {
   padding: 0 10px;
   float: right;
   opacity: 0.6;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box; }
+  box-sizing: border-box; }
 
 .reveal .overlay header a:hover {
   opacity: 1; }

@@ -1,5 +1,5 @@
 /**
- * Sky theme for reveal.js, modified for git-workflow.
+ * Sky theme for reveal.js.
  *
  * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
  */
@@ -44,8 +44,8 @@ $selectionBackgroundColor: #134674;
 
 .reveal h1.header {
   font-size: 80px;
-  position: absolute;
-  top: 50px; left: 100px
+  margin-top: 50px;
+  text-align: center;
 }
 
 .reveal section pre {
@@ -53,11 +53,11 @@ $selectionBackgroundColor: #134674;
 }
 
 .blue {
-  color: #1b91ff; }
+  color: #a3bbbb; }
 
 // Background generator
 @mixin bodyBackground() {
-  @include radial-gradient( #add9e4, #f7fbfc );
+  @include radial-gradient( #a3bbbb, #f7fbfc );
 }
 
 // Theme template ------------------------------

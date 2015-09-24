@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Docker und VuFind(2)</title>
+
+    <meta name="description" content="what is Docker™ and why should you use it">
+    <meta name="author" content="Ulf Seltmann">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/docker.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        if (window.location.search.match(/print-pdf/gi)) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/print/pdf.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <img data-src="images/docker/logo.png" width="500" style="align: middle;border:none;align:center; " />
+<p>eine Vorstellung der Container-Virtualisierung <b>Docker</b><br> und ihr Einsatz in der Entwicklung der Katalogsoftware VuFind(2)</p>
+            <p>
+                <small>von Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
+                    Projekt finc<br>
+                    Universitätsbibliothek Leipzig<br>
+                    <br>
+
+                </small>
+            </p>
+        </section>
+
+        <section data-state="header1" data-background="images/docker/logo-notext.png" data-background-size="300px" data-background-position="650px 30px">
+            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i></small>
+            <section>
+                <h3>Über mich</h3>
+                <ul>
+                    <li class="fragment">seit April 2013 in der UB Leipzig</li>
+                    <li class="fragment">tätig als Webmaster, vorher als Software-Entwickler für VuFind im Projekt
+                        finc
+                    </li>
+                    <li class="fragment">davor in der freien Marktwirtschaft als Software-Entwickler und Administrator
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Über Docker</h3>
+                <ul>
+                    <li class="fragment">erste Version im März 2013 von <i>dotCloud</i> veröffentlicht</li>
+                    <li class="fragment">2014 Aufnahme in die kommerzielle Distribution Red Hat Enterprise Linux und
+                        openSUSE
+                    </li>
+                    <li class="fragment">seit Version 1.0 offizielle Zuteilung der Ports 2375 und 2376 für
+                        HTTP/HTTPS-Kommunikation
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Was ist Docker</h3>
+                <ul>
+                    <li class="fragment">Containervirtualisierung für linuxuide Betriebssysteme</li>
+                    <li class="fragment">Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>
+                        (https://en.wikipedia.org/wiki/Cgroups), <i>chroot</i> und <i>selinux</i> vom Host-System
+                        isoliert
+                    </li>
+                    <li class="fragment">wird als "chroot-Umgebung auf Speed" bezeichnet</li>
+                </ul>
+            </section>
+        </section>
+        <section data-state="header2" data-background="images/docker/docker-image.png" data-background-size="200px" data-background-position="750px 30px">
+            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i></small>
+            <section>
+                <h3>Images</h3>
+                <ul>
+                    <li class="fragment">leitet ab von Basis-Image</li>
+                    <li class="fragment">`Dockerfile` beschreibt die zusätzliche Installation/Konfiguration</li>
+                    <li class="fragment">Images sind unveränderlich, Änderungen bauen aufeinander auf</li>
+                    <li class="fragment">Images werden ver-/ge-teilt über öffentliches oder privates Repository</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Container</h3>
+                <ul>
+                    <li class="fragment">basieren auf einem Image</li>
+                    <li class="fragment">startet mit dem Start eines Programms und beendet mit dessen Beendigung</li>
+                    <li class="fragment">können Volumes des Hostsystems oder anderer Container einbinden</li>
+                    <li class="fragment">können Ports an das Hostsystem oder andere Container forwarden</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Hello World!</h3>
+                <pre class="fragment"><code>docker run --name hello-world ubuntu echo "Hello World!"</code></pre>
+                <pre class="fragment"><code>Unable to find image 'ubuntu:latest' locally
+Pulling repository ubuntu
+91e54dfb1179: Download complete
+d3a1f33e8a5a: Download complete
+c22013c84729: Download complete
+d74508fb6632: Download complete
+Status: Downloaded newer image for ubuntu:latest
+Hello World!</code></pre>
+                <ul><li class="fragment"><i>run</i>-Kommando legt die Container-Konfiguration fest</li></ul>
+            </section>
+            <section>
+                <h3>Hello World! (Again)</h3>
+                <pre class="fragment"><code>docker start -ai hello-world</code></pre>
+                <pre class="fragment"><code>Hello World!</code></pre>
+                <ul><li class="fragment">erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
+                    <i>run</i>-Kommando festgelegt wurde</li></ul>
+            </section>
+        </section>
+        <section data-state="header3" data-background="images/docker/docker-getcloudify.org.png" data-background-size="200px" data-background-position="750px 30px">
+            <section>
+                <h3>Docker installieren/aktivieren/starten</h3>
+                <pre class="fragment"><code>sudo dnf|yum|apt-get install docker(.io)</code></pre>
+                <pre class="fragment"><code>sudo systemctl enable docker</code></pre>
+            </section>
+            <section>
+                <h3>Das VuFind2-Image</h3>
+                <ul>
+                    <li class="fragment">als Entwicklungstestumgebung gedacht</li>
+                    <li class="fragment">bestehend aus Debian, Apache2, PHP 5.4, MySQL 5.6, Solr</li>
+                    <li class="fragment"><code>git clone https://github.com/vufind-org/vufind.git</code></li>
+                    <li class="fragment"><code>sudo docker run --rm -ti -v $(pwd)/vufind:/app -p 80:80 -p 443:443 -p
+                        8080:8080 -p 3306:3306 useltmann/vufind2</code></li>
+                </ul>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        margin: 0.1,
+        minScale: 0.2,
+        maxScale: 0.8,
+        width: 1024,
+        height: 768,
+//        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {
+                src: 'plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            }
+            }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
