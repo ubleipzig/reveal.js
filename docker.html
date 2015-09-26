@@ -42,39 +42,38 @@
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
         <section>
-            <img data-src="images/docker/logo.png" width="500" style="align: middle;border:none;align:center; " />
-<p>eine Vorstellung der Container-Virtualisierung <b>Docker</b><br> und ihr Einsatz in der Entwicklung der Katalogsoftware VuFind(2)</p>
-            <p>
-                <small>von Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
-                    Projekt finc<br>
-                    Universitätsbibliothek Leipzig<br>
-                    <br>
-
-                </small>
-            </p>
+            <div class="row">
+                <img data-src="images/docker/logo-notext.png" width="500" class="frontscreen" />
+            </div>
+            <div class="row">
+                <p>eine Vorstellung der Container-Virtualisierung</p><h2>Docker</h2><p>und ihr Einsatz in der Entwicklung von VuFind(2)</p>
+                <p>
+                    <small>von Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
+                        Projekt finc<br>
+                        Universitätsbibliothek Leipzig</small>
+                </p>
+            </div>
         </section>
 
-        <section data-state="header1" data-background="images/docker/logo-notext.png" data-background-size="300px" data-background-position="650px 30px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i></small>
+        <section data-state="header1" data-background="images/docker/logo-notext.png" data-background-size="300px" data-background-position="680px 30px">
+            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://</i></small>
             <section>
                 <h3>Über mich</h3>
                 <ul>
-                    <li class="fragment">seit April 2013 in der UB Leipzig</li>
-                    <li class="fragment">tätig als Webmaster, vorher als Software-Entwickler für VuFind im Projekt
-                        finc
-                    </li>
-                    <li class="fragment">davor in der freien Marktwirtschaft als Software-Entwickler und Administrator
+                    <li>2000 bis 2007 Administrator im Web-/Linux-Umfeld</li>
+                    <li>2007 Programmierer für PHP im Bereich e-Commerce</li>
+                    <li>seit April 2013 Programmierer in der UB Leipzig,<br> erst im Projekt finc, jetzt als Webmaster</li>
                     </li>
                 </ul>
             </section>
             <section>
                 <h3>Über Docker</h3>
                 <ul>
-                    <li class="fragment">erste Version im März 2013 von <i>dotCloud</i> veröffentlicht</li>
-                    <li class="fragment">2014 Aufnahme in die kommerzielle Distribution Red Hat Enterprise Linux und
+                    <li>erste Version im März 2013 von <i>dotCloud</i> veröffentlicht</li>
+                    <li>2014 Aufnahme in die kommerzielle Distribution Red Hat Enterprise Linux und
                         openSUSE
                     </li>
-                    <li class="fragment">seit Version 1.0 offizielle Zuteilung der Ports 2375 und 2376 für
+                    <li>seit Version 1.0 offizielle Zuteilung der Ports 2375 und 2376 für
                         HTTP/HTTPS-Kommunikation
                     </li>
                 </ul>
@@ -82,12 +81,10 @@
             <section>
                 <h3>Was ist Docker</h3>
                 <ul>
-                    <li class="fragment">Containervirtualisierung für linuxuide Betriebssysteme</li>
-                    <li class="fragment">Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>
-                        (https://en.wikipedia.org/wiki/Cgroups), <i>chroot</i> und <i>selinux</i> vom Host-System
-                        isoliert
-                    </li>
-                    <li class="fragment">wird als "chroot-Umgebung auf Speed" bezeichnet</li>
+                    <li>Containervirtualisierung für linuxuide Betriebssysteme</li>
+                    <li>Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>, <i>chroot</i> und <i>selinux</i>
+                        vom Host-System isoliert</li>
+                    <li>wird als "chroot-Umgebung auf Speed" bezeichnet</li>
                 </ul>
             </section>
         </section>
@@ -96,58 +93,152 @@
             <section>
                 <h3>Images</h3>
                 <ul>
-                    <li class="fragment">leitet ab von Basis-Image</li>
-                    <li class="fragment">`Dockerfile` beschreibt die zusätzliche Installation/Konfiguration</li>
-                    <li class="fragment">Images sind unveränderlich, Änderungen bauen aufeinander auf</li>
-                    <li class="fragment">Images werden ver-/ge-teilt über öffentliches oder privates Repository</li>
+                    <li>leitet ab von Basis-Image</li>
+                    <li><code>Dockerfile</code> beschreibt die zusätzliche Installation/Konfiguration</li>
+                    <li>Images sind unveränderlich, Änderungen bauen aufeinander auf</li>
+                    <li>Images werden ver-/ge-teilt über öffentliches oder privates Repository</li>
                 </ul>
             </section>
             <section>
                 <h3>Container</h3>
                 <ul>
-                    <li class="fragment">basieren auf einem Image</li>
-                    <li class="fragment">startet mit dem Start eines Programms und beendet mit dessen Beendigung</li>
-                    <li class="fragment">können Volumes des Hostsystems oder anderer Container einbinden</li>
-                    <li class="fragment">können Ports an das Hostsystem oder andere Container forwarden</li>
+                    <li>basieren auf einem Image</li>
+                    <li>startet mit dem Start eines Programms und beendet mit dessen Beendigung</li>
+                    <li>können Volumes des Hostsystems oder anderer Container einbinden</li>
+                    <li>können Ports an das Hostsystem oder andere Container forwarden</li>
                 </ul>
             </section>
             <section>
                 <h3>Hello World!</h3>
-                <pre class="fragment"><code>docker run --name hello-world ubuntu echo "Hello World!"</code></pre>
-                <pre class="fragment"><code>Unable to find image 'ubuntu:latest' locally
+                <pre class="fragment"><code>#$ docker run --name hello-world ubuntu echo "Hello World!"</code></pre>
+                <div class="fragment">
+                <pre><code>Unable to find image 'ubuntu:latest' locally
 Pulling repository ubuntu
 91e54dfb1179: Download complete
 d3a1f33e8a5a: Download complete
 c22013c84729: Download complete
 d74508fb6632: Download complete
 Status: Downloaded newer image for ubuntu:latest
-Hello World!</code></pre>
-                <ul><li class="fragment"><i>run</i>-Kommando legt die Container-Konfiguration fest</li></ul>
+Hello World!
+#$
+                </code></pre>
+                    <ul><li><i>run</i>-Kommando legt die Container-Konfiguration fest</li></ul>
+                </div>
             </section>
             <section>
                 <h3>Hello World! (Again)</h3>
-                <pre class="fragment"><code>docker start -ai hello-world</code></pre>
-                <pre class="fragment"><code>Hello World!</code></pre>
-                <ul><li class="fragment">erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
-                    <i>run</i>-Kommando festgelegt wurde</li></ul>
+                <pre class="fragment"><code>#$ docker start -ai hello-world</code></pre>
+                <div class="fragment">
+                <pre><code>Hello World!
+#$
+                </code></pre>
+                    <ul><li>erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
+                        <i>run</i>-Kommando festgelegt wurde</li></ul>
+                </div>
             </section>
         </section>
         <section data-state="header3" data-background="images/docker/docker-getcloudify.org.png" data-background-size="200px" data-background-position="750px 30px">
             <section>
                 <h3>Docker installieren/aktivieren/starten</h3>
-                <pre class="fragment"><code>sudo dnf|yum|apt-get install docker(.io)</code></pre>
-                <pre class="fragment"><code>sudo systemctl enable docker</code></pre>
+                <pre><code>sudo dnf|yum|apt-get install docker(.io)</code></pre>
+                <pre><code>sudo systemctl enable docker</code></pre>
+                <pre><code>sudo systemctl start docker</code></pre>
             </section>
+        </section>
+        <section data-state="header3">
+            <h3>Das VuFind2-Image</h3>
             <section>
-                <h3>Das VuFind2-Image</h3>
+                <img data-src="images/docker/docker-hub.png" width="650"/>
                 <ul>
-                    <li class="fragment">als Entwicklungstestumgebung gedacht</li>
-                    <li class="fragment">bestehend aus Debian, Apache2, PHP 5.4, MySQL 5.6, Solr</li>
-                    <li class="fragment"><code>git clone https://github.com/vufind-org/vufind.git</code></li>
-                    <li class="fragment"><code>sudo docker run --rm -ti -v $(pwd)/vufind:/app -p 80:80 -p 443:443 -p
-                        8080:8080 -p 3306:3306 useltmann/vufind2</code></li>
+                    <li>öffentliches Image in offizieller Docker-Registry</li>
+                    <li>als Entwicklungstestumgebung gedacht</li>
+                    <li>bestehend aus Debian Wheezy, Apache2, PHP 5.4, MySQL 5.6, OpenJDK 1.8</li>
                 </ul>
             </section>
+            <section>
+                <p>VuFind-Sourcen klonen
+                    <pre><code>#$ git clone https://github.com/vufind-org/vufind.git</code></pre>
+                    <pre><code>Klone nach 'vufind'...
+remote: Counting objects: 106741, done.
+remote: Compressing objects: 100% (20/20), done.
+remote: Total 106741 (delta 6), reused 0 (delta 0), pack-reused 106720
+Empfange Objekte: 100% (106741/106741), 388.15 MiB | 3.83 MiB/s, Fertig.
+Löse Unterschiede auf: 100% (69166/69166), Fertig.
+Prüfe Konnektivität... Fertig.
+                    </code></pre>
+                </p>
+            </section>
+            <section>
+                <p>VuFind-Container starten
+                        <pre><code>#$ sudo docker run --rm -ti \
+        -v $(pwd)/vufind:/app \
+        -p 80:80 -p 443:443 -p 8080:8080 -p 3306:3306 \
+        useltmann/vufind2</code></pre>
+                        <pre><code>
+Unable to find image 'useltmann/vufind2:latest' locally
+Pulling repository useltmann/vufind2
+dbce69cc9264: Download complete
+4c8cbfd2973e: Download complete
+...
+138278fd23d3: Download complete
+Status: Downloaded newer image for useltmann/vufind2:latest
+Setting up owner/group of dev...
+Setting up runtime environment...
+Setting up 10-mysqld...
+...
+                    </code></pre>
+                </p>
+            </section>
+            <section>
+                <p>Container aufrufen</p>
+                <img data-src="images/docker/vufind2.png" width="650" />
+                <code>http://localhost/vufind/</code>
+            </section>
+        </section>
+        <section data-state="header4">
+            <h3>Die Image-Tools</h3>
+            <section>
+                <p>PHP-Einstellungen mit <i>PHPInfo</i></p>
+                <img data-src="images/docker/phpinfo.png" width="650" />
+                <code>http://localhost/phpinfo/</code>
+            </section>
+            <section>
+                <p>Debugging mit <i>XDebug</i></p>
+                <img data-src="images/docker/xdebug.png" width="650" />
+                <img data-src="images/docker/xdebug-helper-debug.png" width="250" />
+            </section>
+            <section>
+                <p>Profiling mit <i>XDebug</i> und <i>webgrind</i></p>
+                <img data-src="images/docker/webgrind.png" width="650" />
+                <img data-src="images/docker/xdebug-helper-profile.png" width="250" />
+                <code>http://localhost/webgrind/</code>
+            </section>
+            <section>
+                <p>OPCode- und Variable Cache  mit <i>XCache</i></p>
+                <img data-src="images/docker/xcache.png" width="650" />
+                <code>http://localhost/xcache/</code>
+            </section>
+        </section>
+        <section>
+            <h3>Build-Sourcen auf GitHub</h3>
+            <img data-src="images/docker/github.png" width="650" />
+            <code>https://github.com/finc/docker-vufind2/</code>
+        </section>
+        <section>
+            <div class="row">
+                <img data-src="images/docker/docker-all-the-things.png" />
+            </div>
+            <div class="row">
+                <p>
+                    <ul>
+                        <li>nichts ist fehlerfrei</li>
+                        <li>Probleme werden behoben</li>
+                        <li>Features werden hinzugefügt</li>
+                        <li>Pull requests are welcome</li>
+                    </ul>
+                </p>
+                <h3>Vielen Dank!</h3>
+            </div>
         </section>
     </div>
 </div>
