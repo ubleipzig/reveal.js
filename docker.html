@@ -43,29 +43,38 @@
     <div class="slides">
         <section>
             <div class="row">
-                <img data-src="images/docker/logo-notext.png" width="500" class="frontscreen" />
+                <img data-src="images/docker/logo-notext.png" width="500" class="frontscreen"/>
             </div>
             <div class="row">
-                <p>eine Vorstellung der Container-Virtualisierung</p><h2>Docker</h2><p>und ihr Einsatz in der Entwicklung von VuFind(2)</p>
+                <p>eine Vorstellung der Container-Virtualisierung</p>
+
+                <h2>Docker</h2>
+
+                <p>und ihr Einsatz in der Entwicklung von VuFind(2)</p>
+
                 <p>
                     <small>von Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
                         Projekt finc<br>
-                        Universitätsbibliothek Leipzig</small>
+                        Universitätsbibliothek Leipzig
+                    </small>
                 </p>
             </div>
         </section>
 
-        <section data-state="header1" data-background="images/docker/logo-notext.png" data-background-size="300px" data-background-position="680px 30px">
+        <section data-state="header1" data-background="images/docker/logo-notext.png" data-background-size="300px"
+                 data-background-position="680px 30px">
             <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://</i></small>
             <section>
                 <h3>Über mich</h3>
                 <ul>
                     <li>2000 bis 2007 Administrator im Web-/Linux-Umfeld</li>
                     <li>2007 Programmierer für PHP im Bereich e-Commerce</li>
-                    <li>seit April 2013 Programmierer in der UB Leipzig,<br> erst im Projekt finc, jetzt als Webmaster</li>
+                    <li>seit April 2013 Programmierer in der UB Leipzig,<br> erst im Projekt finc, jetzt als Webmaster
+                    </li>
                     </li>
                 </ul>
             </section>
+            <!--
             <section>
                 <h3>Über Docker</h3>
                 <ul>
@@ -78,24 +87,28 @@
                     </li>
                 </ul>
             </section>
+            -->
             <section>
                 <h3>Was ist Docker</h3>
                 <ul>
                     <li>Containervirtualisierung für linuxuide Betriebssysteme</li>
                     <li>Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>, <i>chroot</i> und <i>selinux</i>
-                        vom Host-System isoliert</li>
+                        vom Host-System isoliert
+                    </li>
                     <li>wird als "chroot-Umgebung auf Speed" bezeichnet</li>
                 </ul>
             </section>
         </section>
-        <section data-state="header2" data-background="images/docker/docker-image.png" data-background-size="200px" data-background-position="750px 30px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i></small>
+        <section data-state="header2" data-background="images/docker/docker-image.png" data-background-size="200px"
+                 data-background-position="750px 30px">
+            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i>
+            </small>
             <section>
                 <h3>Images</h3>
                 <ul>
                     <li>leitet ab von Basis-Image</li>
                     <li><code>Dockerfile</code> beschreibt die zusätzliche Installation/Konfiguration</li>
-                    <li>Images sind unveränderlich, Änderungen bauen aufeinander auf</li>
+                    <li>Image-Änderungen werden revisioniert</li>
                     <li>Images werden ver-/ge-teilt über öffentliches oder privates Repository</li>
                 </ul>
             </section>
@@ -112,7 +125,7 @@
                 <h3>Hello World!</h3>
                 <pre class="fragment"><code>#$ docker run --name hello-world ubuntu echo "Hello World!"</code></pre>
                 <div class="fragment">
-                <pre><code>Unable to find image 'ubuntu:latest' locally
+                            <pre><code>Unable to find image 'ubuntu:latest' locally
 Pulling repository ubuntu
 91e54dfb1179: Download complete
 d3a1f33e8a5a: Download complete
@@ -121,26 +134,32 @@ d74508fb6632: Download complete
 Status: Downloaded newer image for ubuntu:latest
 Hello World!
 #$
-                </code></pre>
-                    <ul><li><i>run</i>-Kommando legt die Container-Konfiguration fest</li></ul>
+                            </code></pre>
+                    <ul>
+                        <li><i>run</i>-Kommando legt die Container-Konfiguration fest</li>
+                    </ul>
                 </div>
             </section>
             <section>
                 <h3>Hello World! (Again)</h3>
                 <pre class="fragment"><code>#$ docker start -ai hello-world</code></pre>
                 <div class="fragment">
-                <pre><code>Hello World!
+                            <pre><code>Hello World!
 #$
-                </code></pre>
-                    <ul><li>erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
-                        <i>run</i>-Kommando festgelegt wurde</li></ul>
+                            </code></pre>
+                    <ul>
+                        <li>erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
+                            <i>run</i>-Kommando festgelegt wurde
+                        </li>
+                    </ul>
                 </div>
             </section>
         </section>
-        <section data-state="header3" data-background="images/docker/docker-getcloudify.org.png" data-background-size="200px" data-background-position="750px 30px">
+        <section data-state="header3" data-background="images/docker/docker-getcloudify.org.png"
+                 data-background-size="200px" data-background-position="750px 30px">
             <section>
                 <h3>Docker installieren/aktivieren/starten</h3>
-                <pre><code>sudo dnf|yum|apt-get install docker(.io)</code></pre>
+                <pre><code>sudo yum|apt-get install docker(.io)</code></pre>
                 <pre><code>sudo systemctl enable docker</code></pre>
                 <pre><code>sudo systemctl start docker</code></pre>
             </section>
@@ -157,24 +176,24 @@ Hello World!
             </section>
             <section>
                 <p>VuFind-Sourcen klonen
-                    <pre><code>#$ git clone https://github.com/vufind-org/vufind.git</code></pre>
-                    <pre><code>Klone nach 'vufind'...
+                <pre><code>#$ git clone https://github.com/vufind-org/vufind.git</code></pre>
+                                <pre><code>Klone nach 'vufind'...
 remote: Counting objects: 106741, done.
 remote: Compressing objects: 100% (20/20), done.
 remote: Total 106741 (delta 6), reused 0 (delta 0), pack-reused 106720
 Empfange Objekte: 100% (106741/106741), 388.15 MiB | 3.83 MiB/s, Fertig.
 Löse Unterschiede auf: 100% (69166/69166), Fertig.
 Prüfe Konnektivität... Fertig.
-                    </code></pre>
+                                </code></pre>
                 </p>
             </section>
             <section>
                 <p>VuFind-Container starten
-                        <pre><code>#$ sudo docker run --rm -ti \
-        -v $(pwd)/vufind:/app \
-        -p 80:80 -p 443:443 -p 8080:8080 -p 3306:3306 \
-        useltmann/vufind2</code></pre>
-                        <pre><code>
+                <pre><code>#$ sudo docker run --rm -t -i \
+    -v $(pwd)/vufind:/usr/local/vufind2 \
+    -p 80:80 -p 443:443 -p 8080:8080 -p 3306:3306 \
+    useltmann/vufind2</code></pre>
+                <pre><code>
 Unable to find image 'useltmann/vufind2:latest' locally
 Pulling repository useltmann/vufind2
 dbce69cc9264: Download complete
@@ -186,12 +205,12 @@ Setting up owner/group of dev...
 Setting up runtime environment...
 Setting up 10-mysqld...
 ...
-                    </code></pre>
+                </code></pre>
                 </p>
             </section>
             <section>
                 <p>Container aufrufen</p>
-                <img data-src="images/docker/vufind2.png" width="650" />
+                <img data-src="images/docker/vufind2.png" width="650"/><br>
                 <code>http://localhost/vufind/</code>
             </section>
         </section>
@@ -199,43 +218,43 @@ Setting up 10-mysqld...
             <h3>Die Image-Tools</h3>
             <section>
                 <p>PHP-Einstellungen mit <i>PHPInfo</i></p>
-                <img data-src="images/docker/phpinfo.png" width="650" />
+                <img data-src="images/docker/phpinfo.png" width="650"/><br>
                 <code>http://localhost/phpinfo/</code>
             </section>
             <section>
                 <p>Debugging mit <i>XDebug</i></p>
-                <img data-src="images/docker/xdebug.png" width="650" />
-                <img data-src="images/docker/xdebug-helper-debug.png" width="250" />
+                <img data-src="images/docker/xdebug.png" width="650"/>
+                <img data-src="images/docker/xdebug-helper-debug.png" width="250"/>
             </section>
             <section>
                 <p>Profiling mit <i>XDebug</i> und <i>webgrind</i></p>
-                <img data-src="images/docker/webgrind.png" width="650" />
-                <img data-src="images/docker/xdebug-helper-profile.png" width="250" />
+                <img data-src="images/docker/webgrind.png" width="650"/>
+                <img data-src="images/docker/xdebug-helper-profile.png" width="250"/><br>
                 <code>http://localhost/webgrind/</code>
             </section>
             <section>
-                <p>OPCode- und Variable Cache  mit <i>XCache</i></p>
-                <img data-src="images/docker/xcache.png" width="650" />
+                <p>OPCode- und Variable Cache mit <i>XCache</i></p>
+                <img data-src="images/docker/xcache.png" width="650"/><br>
                 <code>http://localhost/xcache/</code>
             </section>
         </section>
         <section>
             <h3>Build-Sourcen auf GitHub</h3>
-            <img data-src="images/docker/github.png" width="650" />
+            <img data-src="images/docker/github.png" width="650"/><br>
             <code>https://github.com/finc/docker-vufind2/</code>
         </section>
         <section>
             <div class="row">
-                <img data-src="images/docker/docker-all-the-things.png" />
+                <img data-src="images/docker/docker-all-the-things.png"/>
             </div>
             <div class="row">
                 <p>
-                    <ul>
-                        <li>nichts ist fehlerfrei</li>
-                        <li>Probleme werden behoben</li>
-                        <li>Features werden hinzugefügt</li>
-                        <li>Pull requests are welcome</li>
-                    </ul>
+                <ul>
+                    <li>nichts ist fehlerfrei</li>
+                    <li>Probleme werden behoben</li>
+                    <li>Features werden hinzugefügt</li>
+                    <li>Pull requests are welcome</li>
+                </ul>
                 </p>
                 <h3>Vielen Dank!</h3>
             </div>
@@ -260,7 +279,7 @@ Setting up 10-mysqld...
         maxScale: 0.8,
         width: 1024,
         height: 768,
-//        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        //        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
         transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
 
         // Parallax scrolling
