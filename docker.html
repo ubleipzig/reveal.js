@@ -97,10 +97,10 @@
                 </ul>
                 <aside class="notes">
                     <ul>
-                        <li>ein Setup einzelner VuFind-Komponenten kann eine langwierige Sache werden</li>
-                        <li>verschiedene Host-Systeme führten teilweise zu unterschiedlichen Ergebnissen</li>
-                        <li>Aktualisierung dieser Systeme musste von jedem Entwickler selbst vorgenommen werden</li>
-                        <li>Installation und Konfiguration von Entwicklungswerkzeugen zum debuggen, profilen, unittests, ... blieben meist auf der Strecke</li>
+                        <li>Setup kann eine langwierige Sache werden</li>
+                        <li>verschiedene Host-Systeme führten zu unterschiedlichen Ergebnissen</li>
+                        <li>Aktualisierung von jedem Entwickler selbst vorzunehmen</li>
+                        <li>Entwicklungswerkzeuge bleiben auf der Strecke</li>
                         <li>Entscheidung fiel auf Docker</li>
                     </ul>
                 </aside>
@@ -118,11 +118,10 @@
                 <aside class="notes">
                     <ul>
                         <li>"Virtualisierung" eher unpassend</li>
-                        <li>es findet keine Emulierung von Hardwarekomponenten statt wie bei herkömmlicher Virtualisierung</li>
+                        <li>es findet keine Emulierung von Hardwarekomponenten</li>
                         <li>Bezeichnung "Isolierung" würde eher zutreffen</li>
-                        <li>für Isolierung eines Bereichs - Containers - werden Linux-Kernel-Funktionen benutzt</li>
-                        <li>sorgen dafür, dass Programme, die im Container ausgeführt werden, nicht auf die Ressourcen des Hostsystems zugreifen, die das Hostsystem beansprucht</li>
-                        <li>Container müssen eigene Werkzeugsammlung mitbringen, um die Bedingungen des auszuführenden Programmes zu erfüllen</li>
+                        <li>für Isolierung werden Linux-Kernel-Funktionen benutzt</li>
+                        <li>Container müssen eigene Werkzeugsammlung mitbringen</li>
                     </ul>
                 </aside>
             </section>
@@ -158,10 +157,10 @@
                 <aside class="notes">
                     <ul>
                         <li>bilden die Laufzeitumgebung eines Programmes</li>
-                        <li>individuelle Konfiguration kann zum Container-Start vorgenommen werden</li>
-                        <li>Container selbst sind "Wegwerfware" und sollten so behandelt werden</li>
-                        <li>werden standardmäßig nach dem Beenden nicht gelöscht, kann aber durch eine Option gesetzt werden</li>
-                        <li>durch Weiterreichung von Dateien, Ordnern und Ports kann komplexes Zusammenspiel mehrerer Container realisiert werden</li>
+                        <li>individuelle Konfiguration bei Container-Erzeugung</li>
+                        <li>Container selbst sind "Wegwerfware"</li>
+                        <li>werden standardmäßig nach dem Beenden nicht gelöscht</li>
+                        <li>komplexes Zusammenspiel mehrerer Container durch Resourcenteilung</li>
                     </ul>
                 </aside>
             </section>
@@ -185,10 +184,10 @@ Hello World!
                 </div>
                 <aside class="notes">
                     <ul>
-                        <li>berühmtes "Hello World!"-Beispiel auch für Docker anwendbar</li>
-                        <li>"docker run" erzeugt einen Container als Laufzeitumgebung</li>
-                        <li>führt übergebenes oder in Image konfiguriertes Kommando in dieser Umgebung aus</li>
-                        <li>beendet Container, wenn Kommando-Ausführung abgeschlossen ist</li>
+                        <li>"Hello World!"-Beispiel auch für Docker</li>
+                        <li>"docker run" erzeugt einen Container</li>
+                        <li>führt übergebenes oder in Image konfiguriertes Kommando aus</li>
+                        <li>beendet Container, wenn Kommando-Ausführung abgeschlossen</li>
                         <li>Container wird nicht gelöscht</li>
                     </ul>
                 </aside>
@@ -235,7 +234,6 @@ Prüfe Konnektivität... Fertig.
                 <aside class="notes">
                     <ul>
                         <li>klont das VuFind-Repository in den Ordner "vufind"</li>
-                        <li></li>
                     </ul>
                 </aside>
             </section>
@@ -259,12 +257,12 @@ Setting up 10-mysqld...
                 </code></pre>
                 <aside class="notes">
                     <ul>
-                        <li>"--rm" löscht den Container, wenn das aufgerufene Kommando beendet ist</li>
-                        <li>"-i" steht für "interactive", verbindet die Standard-Eingabe mit unserem Terminal</li>
-                        <li>"-t" steht für "tty" und erstellt für den Container eine Eingabeschnittstelle zur Interaktion</li>
-                        <li>"-v" steht für "Volume" und spezifiziert, welche lokalen Dateien oder Ordner an welcher Stelle im Container verfügbar gemacht werden sollen</li>
-                        <li>"-p" steht für "port" und spezifiziert, an welchen Ports des Hostsystems Ports des Containers gebunden werden sollen</li>
-                        <li>"-v" und "-p" können mehrfach angegeben werden</li>
+                        <li>"--rm" löscht den Container</li>
+                        <li>"-i" verbindet die Standard-Eingabe mit Terminal</li>
+                        <li>"-t" erstellt Eingabeschnittstelle zur Interaktion</li>
+                        <li>"-v" welche lokalen Dateien oder Ordner wo verfügbar</li>
+                        <li>"-p" welche Ports wo verfügbar</li>
+                        <li>"-v" und "-p" mehrfach möglich</li>
                     </ul>
                 </aside>
             </section>
@@ -286,7 +284,7 @@ Setting up 10-mysqld...
                         <li>lässt sich einfach finden, da derzeit einziges vufind2-image</li>
                         <li>Benutzung ist hier dokumentiert</li>
                         <li>individuelle Konfiguration möglich</li>
-                        <li>Einsatz im produktiven Bereich nicht empfohlen, da sensitive Daten über die Laufzeitumgebung preisgegeben werden</li>
+                        <li>Einsatz im produktiven Bereich nicht empfohlen</li>
                     </ul>
                 </aside>
             </section>
@@ -311,9 +309,9 @@ Setting up 10-mysqld...
                 <img data-src="images/docker/xdebug-helper-debug.png" width="150"/>
                 <aside class="notes">
                     <ul>
-                        <li>wesentlich komfortabler, als Variablenausgabe mit var_dump()</li>
-                        <li>mit chrome-extension xdebug-helper lässt sich debugging für seitenaufruf aktivieren</li>
-                        <li>in geeigneter IDE wird localhost als xdebug-server konfiguriert</li>
+                        <li>komfortabler als var_dump()</li>
+                        <li>in IDE localhost als xdebug-server konfigurieren</li>
+                        <li>mit chrome-extension xdebug-helper aktivieren</li>
                     </ul>
                 </aside>
             </section>
@@ -324,9 +322,9 @@ Setting up 10-mysqld...
                 <code>http://localhost/webgrind/</code>
                 <aside class="notes">
                     <ul>
-                        <li>XDebug erstellt Trace-Protokolle zur Protokollierung der Ausführungszeit aller Funktionen eines Requests</li>
-                        <li>mit chrome-extension xdebug-helper lässt sich Profiling für Seitenaufruf aktivieren</li>
-                        <li>Webgrind ist Webanwendung basierend auf PHP und JavaScript und wertet die Trace-Protokolle aus</li>
+                        <li>Webgrind ist Webanwendung und wertet Trace-Protokolle aus</li>
+                        <li>XDebug erstellt Trace-Protokolle</li>
+                        <li>mit chrome-extension xdebug-helper lässt sich Profiling aktivieren</li>
                     </ul>
                 </aside>
             </section>
@@ -336,9 +334,9 @@ Setting up 10-mysqld...
                 <code>http://localhost/xcache/</code>
                 <aside class="notes">
                     <ul>
-                        <li>XCache ist Erweiterung in PHP, die als OPCode-Cache und Variablen-Cache dient</li>
-                        <li>OPCode-Cache ist mehr oder weniger transparent und soll den Code-Kompilierungsprozess von PHP beschleunigen</li>
-                        <li>Variable-Cache stellt einen Requestübergreifenden Speicher für Variablen zur Verfügung, bspw. für Sessiondaten</li>
+                        <li>XCache ist Erweiterung in PHP</li>
+                        <li>OPCode-Cache beschleunigt Scriptkompilierung </li>
+                        <li>Variable-Cache ist Request-übergreifender Speicher bspw. für Sessiondaten</li>
                         <li>XCache bietet eine API für Variable-Cache</li>
                     </ul>
                 </aside>
@@ -364,10 +362,10 @@ BUILD FINISHED
 Total time: 2 minutes  10.28 seconds</code></pre>
                 <aside class="notes">
                     <ul>
-                        <li>Continuous Integration ist fester Bestandteil der vufind2-Community</li>
+                        <li>Continuous Integration ist Bestandteil der vufind2-Community</li>
                         <li>Demian Katz wünscht sich Unit-Tests für Community-Features</li>
                         <li>sauberer Code ist einheitlich formatiert und dokumentiert</li>
-                        <li>eigene Entwicklung kann im Vorfeld geprüft werden durch diese im Image eingebauten Tools</li>
+                        <li>eigene Entwicklung sollte im Vorfeld geprüft werden</li>
                     </ul>
                 </aside>
             </section>
@@ -382,9 +380,9 @@ Total time: 2 minutes  10.28 seconds</code></pre>
                 <code>https://github.com/finc/docker-vufind2/</code>
                 <aside class="notes">
                     <ul>
-                        <li>build-Sourcen, die zu Image führen, stehen unter github zur Verfügung</li>
-                        <li>sollten Fehler auftreten, können hier Issues eröffnet werden</li>
-                        <li>wenn zusätzliche Features erwünscht werden, gerne ebenfalls als Issue oder Pull-Request</li>
+                        <li>build-Sourcen auf github</li>
+                        <li>fehler können hier gemeldet werden</li>
+                        <li>Pull-Request können gestellt werden</li>
                     </ul>
                 </aside>
             </section>
@@ -394,8 +392,8 @@ Total time: 2 minutes  10.28 seconds</code></pre>
                 <code>https://hub.docker.com/r/useltmann/vufind2/</code>
                 <aside class="notes">
                     <ul>
-                        <li>image steht im öffentlichen Repository von docker zur Verfügung</li>
-                        <li>Anleitung zum Einsatz des Images findet sich hier</li>
+                        <li>image öfentlich auf docker hub</li>
+                        <li>Anleitung findet sich hier</li>
                     </ul>
                 </aside>
             </section>
@@ -428,12 +426,6 @@ Total time: 2 minutes  10.28 seconds</code></pre>
             </div>
             </div>
             <aside class="notes">
-                <ul>
-                    <li>nichts ist fehlerfrei</li>
-                    <li>Probleme werden behoben</li>
-                    <li>Features werden hinzugefügt</li>
-                    <li>Pull requests are welcome</li>
-                </ul>
             </aside>
         </section>
     </div>
