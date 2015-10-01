@@ -297,7 +297,8 @@ body {
   box-shadow: none; }
 
 .reveal section img {
-  border: none; }
+  border: none;
+  margin: 0; }
 
 .reveal section div.row {
   width: 512px;
