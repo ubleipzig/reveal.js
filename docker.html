@@ -62,7 +62,7 @@
             <aside class="notes">
                 <ul>
                     <li>Containervirtualisierung Docker vorstellen</li>
-                    <li>wie sie uns Entwicklern die tägliche Arbeit erleichtert</li>
+                    <li>wie Entwicklungstestumgebung für vufind2 Entwicklern die tägliche Arbeit erleichtert</li>
                 </ul>
             </aside>
         </section>
@@ -80,29 +80,23 @@
                 </ul>
                 <aside class="notes">
                     <ul>
-                        <li>2013 als PHP-Entwickler an die UB Leipzig gekommen</li>
-                        <li>ersten Tage mit der Einrichtung des VuFind(1) Öko-Systems zugebracht</li>
-                        <li>Prozess ist in VuFind2 mittlerweile etwas vereinfacht</li>
-                        <li>ab 2014 als Webmaster weitere Projekte zu betreuen</li>
+                        <li>2013 als PHP-Entwickler im finc-Team an vufind gearbeitet</li>
+                        <li>2014 als Webmaster Betreuung weiterer Projekte übernommen</li>
                     </ul>
                 </aside>
             </section>
             <section>
-                <h3>Die Aufgabenstellung</h3>
+                <h3>warum eine einheitliche Testumgebung</h3>
                 <ul>
-                    <li>einheitliche Basis für alle Entwickler</li>
-                    <li>Aktualisierung an einer Stelle</li>
-                    <li>automatischer Installations- und Konfigurationsprozess</li>
+                    <li>Vermeidung von unterschiedlichen Ergebnissen</li>
                     <li>eigene und Projekt-Tools out-of-the-Box nutzbar</li>
-                    <li>individuelle Einschränkung so gering wie möglich</li>
+                    <li>einfaches Umschalten der Testumgebung</li>
                 </ul>
                 <aside class="notes">
                     <ul>
-                        <li>Setup kann eine langwierige Sache werden</li>
-                        <li>verschiedene Host-Systeme führten zu unterschiedlichen Ergebnissen</li>
-                        <li>Aktualisierung von jedem Entwickler selbst vorzunehmen</li>
-                        <li>Entwicklungswerkzeuge bleiben auf der Strecke</li>
-                        <li>Entscheidung fiel auf Docker</li>
+                        <li>unterschiedliche Konfiguration</li>
+                        <li>unterschiedliche Versionen</li>
+                        <li>Entwicklungswerkzeuge schwierig zu installieren</li>
                     </ul>
                 </aside>
             </section>
@@ -110,19 +104,19 @@
                 <h3>Was ist Docker</h3>
                 <ul>
                     <li>Containervirtualisierung für linuxoide Betriebssysteme</li>
+                    <li>ein Container ist der isolierte Bereich, in dem das Programm ausgeführt wird</li>
+                    <li>ein Image beinhaltet die notwendigen Abhängigkeiten eines auszuführendes Programmes</li>
                     <li>Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>, <i>chroot</i> und <i>selinux</i>
                         vom Host-System isoliert
                     </li>
-                    <li>ein Image beinhaltet die notwendigen Abhängigkeiten eines auszuführendes Programmes</li>
-                    <li>ein Container ist der isolierte Bereich, in dem das Programm ausgeführt wird</li>
                 </ul>
                 <aside class="notes">
                     <ul>
-                        <li>"Virtualisierung" eher unpassend</li>
-                        <li>es findet keine Emulierung von Hardwarekomponenten</li>
-                        <li>Bezeichnung "Isolierung" würde eher zutreffen</li>
+                        <li>unterscheidet in images und container</li>
+                        <li>Kernel reserviert abgetrennten Bereich für Container</li>
+                        <li>Host-Resourcen können im Container eingebunden werden</li>
+                        <li>image stellt werkzeugsammlung für container dar</li>
                         <li>für Isolierung werden Linux-Kernel-Funktionen benutzt</li>
-                        <li>Container müssen eigene Werkzeugsammlung mitbringen</li>
                     </ul>
                 </aside>
             </section>
@@ -159,9 +153,8 @@
                     <ul>
                         <li>bilden die Laufzeitumgebung eines Programmes</li>
                         <li>individuelle Konfiguration bei Container-Erzeugung</li>
-                        <li>Container selbst sind "Wegwerfware"</li>
-                        <li>werden standardmäßig nach dem Beenden nicht gelöscht</li>
-                        <li>komplexes Zusammenspiel mehrerer Container durch Resourcenteilung</li>
+                        <li>native Linux-Funktionen zur Ressourcenteilung</li>
+                        <li>sehr performant</li>
                     </ul>
                 </aside>
             </section>
@@ -210,8 +203,7 @@ Hello World!
                     <ul>
                         <li>"docker start" startet vorhandenen Container mit dessen Kommando</li>
                         <li>gleiche Konfiguration, wie mit "docker run" festgelegt</li>
-                        <li>-a steht für "attach" und verbindet die Standard-Ausgabe mit unserem Terminal</li>
-                        <li>-i steht für "interactive" und verbindet die Standard-Eingabe mit unserem Terminal</li>
+                        <li>-a und -i verbindet die Standard-Eingabe mit unserem Terminal</li>
                     </ul>
 
                 </aside>
@@ -220,7 +212,7 @@ Hello World!
         <section data-background="images/docker/vufind-image.png" data-background-size="160px"
                  data-background-position="780px 20px">
             <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://www.opengeekservice.cl/sitio/es/bibliotecas/vufind.html</i></small>
-            <h3>Das VuFind2-Image</h3>
+            <h3>Vufind2 mit Docker</h3>
             <section>
                 <p>VuFind-Sourcen klonen</p>
                 <pre class="fragment"><code class="bash">git clone https://github.com/vufind-org/vufind.git</code></pre>
@@ -234,6 +226,7 @@ Prüfe Konnektivität... Fertig.
                 </code></pre>
                 <aside class="notes">
                     <ul>
+                        <li>wie entwickelt man vufind2 mit docker?</li>
                         <li>benötigt vufind2-sourcen</li>
                         <li>klont das VuFind-Repository in den Ordner "vufind"</li>
                     </ul>
@@ -241,7 +234,7 @@ Prüfe Konnektivität... Fertig.
             </section>
             <section>
                 <p>VuFind-Container starten</p>
-                <pre class="fragment"><code class="bash">sudo docker run --rm -t -i \
+                <pre class="fragment"><code class="bash">sudo docker run -t -i \
     -v $(pwd)/vufind:/usr/local/vufind2 \
     -p 80:80 -p 443:443 -p 8080:8080 -p 3306:3306 \
     useltmann/vufind2</code></pre>
@@ -259,9 +252,7 @@ Setting up 10-mysqld...
                 </code></pre>
                 <aside class="notes">
                     <ul>
-                        <li>"--rm" löscht den Container</li>
-                        <li>"-i" verbindet die Standard-Eingabe mit Terminal</li>
-                        <li>"-t" erstellt Eingabeschnittstelle zur Interaktion</li>
+                        <li>"-t" und "-i" verbindet die Standard-Eingabe mit Terminal</li>
                         <li>"-v" welche lokalen Dateien oder Ordner wo verfügbar</li>
                         <li>"-p" welche Ports wo verfügbar</li>
                         <li>"-v" und "-p" mehrfach möglich</li>
@@ -283,6 +274,7 @@ Setting up 10-mysqld...
                 </ul>
                 <aside class="notes">
                     <ul>
+                        <li>ausführliche Dokumentation zum Image auf Docker Hub</li>
                         <li>lässt sich einfach finden, da derzeit einziges vufind2-image</li>
                         <li>Benutzung ist hier dokumentiert</li>
                         <li>individuelle Konfiguration möglich</li>
@@ -344,29 +336,19 @@ Setting up 10-mysqld...
                 </aside>
             </section>
             <section>
-                <p>CI Test mit <i>PHPUnit</i> und <i>CodeSniffer</i></p>
+                <p><i>PHPUnit</i></p>
                 <pre><code>sudo docker run --rm -t -i -v $(pwd)/vufind:/usr/local/vufind2 \
-        useltmann/vufind2 ci</code></pre>
+        useltmann/vufind2 phpunit</code></pre>
                 <pre><code>PHPUnit 4.8.9 by Sebastian Bergmann and contributors.
 ....
 Time: 9.07 seconds, Memory: 95.00Mb
 
 OK, but incomplete, skipped, or risky tests!
-Tests: 801, Assertions: 2137, Skipped: 36.
-Buildfile: /usr/local/vufind2/build.xml
-
-vufind2 > php-cs-fixer-dryrun:
-...
-Fixed all files in 130.037 seconds, 18.000 MB memory used
-
-BUILD FINISHED
-
-Total time: 2 minutes  10.28 seconds</code></pre>
+Tests: 801, Assertions: 2137, Skipped: 36.</code></pre>
                 <aside class="notes">
                     <ul>
-                        <li>Continuous Integration ist Bestandteil der vufind2-Community</li>
+                        <li>phpunit ist Bestandteil der vufind2-Community</li>
                         <li>Demian Katz wünscht sich Unit-Tests für Community-Features</li>
-                        <li>sauberer Code ist einheitlich formatiert und dokumentiert</li>
                         <li>eigene Entwicklung sollte im Vorfeld geprüft werden</li>
                     </ul>
                 </aside>
@@ -383,6 +365,7 @@ Total time: 2 minutes  10.28 seconds</code></pre>
                 <aside class="notes">
                     <ul>
                         <li>build-Sourcen auf github</li>
+                        <li>weitere Tools werden integriert</li>
                         <li>fehler können hier gemeldet werden</li>
                         <li>Pull-Request können gestellt werden</li>
                     </ul>
