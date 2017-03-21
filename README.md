@@ -8,7 +8,7 @@ you can watch that slides here: [https://services.ub.uni-leipzig.de/slides/](htt
 
 * clone the source code
 ```bash
-#$ git clone git@github.com:ubleipzig/reveal.js.git
+$# git clone git@github.com:ubleipzig/reveal.js.git
 ```
 * copy one of the html files in the root folder and name it according to your presentation
 * if you use images, copy them to `images/your-presentation-name/*`
@@ -16,25 +16,27 @@ you can watch that slides here: [https://services.ub.uni-leipzig.de/slides/](htt
 * add your slide to as a new section to the `index.html`
 ```html
 <section>
-	<img data-src="images/awesome-presentation/awesome-logo.png" height="200px">
-	<h2><a href="awesome-presentation.html" target="_blank">The Awesome Presentation</a></h2>
-	<dl>
-		<dt>
-			a brief description about this presentation and why it is awesome.
-		</dt>
-		<dd>
-			<small>
-				<table>
-					<tr>
-						<th>Autor:</th><td>Your Name &lt;your-email@ub.uni-leipzig.de&gt;</td>
-					</tr>
-					<tr>
-						<th>erstellt am:</th><td>21.05.2017</td>
-					</tr>
-				</table>
-			</small>
-		</dd>
-	</dl>
+  <img data-src="images/awesome-presentation/awesome-logo.png" height="200px">
+  <h2>
+    <a href="awesome-presentation.html" target="_blank">The Awesome Presentation</a>
+  </h2>
+  <dl>
+    <dt>
+      a brief description about this presentation and why it is awesome.
+    </dt>
+    <dd>
+      <small>
+        <table>
+          <tr>
+            <th>Autor:</th><td>Your Name &lt;your-email@ub.uni-leipzig.de&gt;</td>
+          </tr>
+          <tr>
+            <th>erstellt am:</th><td>21.05.2017</td>
+          </tr>
+        </table>
+      </small>
+    </dd>
+  </dl>
 </section>
 ```
 * commit and push the project
@@ -47,18 +49,18 @@ purpose you can use docker to start a container that is serving the slides as a 
 
 * first install depending node modules
 ```bash
-#$ docker-compose run --rm node npm install
+$# docker-compose run --rm node npm install
 ```
 * then start the service
 ```bash
-#$ docker-compose up
+$# docker-compose up
 ```
 
 It also compiles your css if you choose to create a custom theme. If you just want to compile the css
 prior to committing your changes use
 
 ```bash
-#$ docker-compose run --rm node npm run compile-css
+$# docker-compose run --rm node npm run compile-css
 ```
 
 ## local copy
