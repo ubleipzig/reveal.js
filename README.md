@@ -55,6 +55,7 @@ $# docker-compose run --rm node npm install
 ```bash
 $# docker-compose up
 ```
+and browse to http://localhost:8000
 
 It also compiles your css if you choose to create a custom theme. If you just want to compile the css
 prior to committing your changes use

@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/git-beginners.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<img data-src="images/git-workflow/git-scm.png" height="200px">
+				<h2>GIT-Beginners</h2>
+				<dl>
+					<dt>
+						grundlegende Prinzipien und Befehle der Versionskontrolle GIT
+					</dt>
+					<dd>
+						<small>
+							<table>
+								<tr>
+									<th>Autor:</th><td>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;</td>
+								</tr>
+								<tr>
+									<th>erstellt am:</th><td>25.04.2017</td>
+								</tr>
+							</table>
+						</small>
+					</dd>
+				</dl>
+			</section>
+
+			<section>
+				<h2>Agenda</h2>
+				<small>
+					<ul>
+						<li>Vorbereitung</li>
+						<li>Repository klonen</li>
+						<li>Die Staging-Area</li>
+						<li>Commit erstellen</li>
+						<li>Branches</li>
+						<li>Ignorierte Dateien</li>
+						<li>Der Stash</li>
+						<li>Dateien umbenennen / löschen</li>
+						<li>Die Historie</li>
+						<li>Diffs</li>
+					</ul>
+				</small>
+			</section>
+			<section>
+				<section data-markdown>
+					<script type="text/template">
+### GIT installieren
+
+Ein aktuelles Git sollte auf jeder größeren Distribution vorliegen, bzw. kann
+für Windows/Mac unter [https://git-scm.com/downloads](https://git-scm.com/downloads) heruntergeladen werden.
+
+```bash
+# Debian/Ubuntu
+$ apt-get install git
+# Fedora
+$ yum install git # (up to Fedora 21)
+$ dnf install git # (Fedora 22 and later)
+# Gentooq
+$ emerge --ask --verbose dev-vcs/git
+# Arch Linux
+$ pacman -S git
+# openSUSE
+$ zypper install git
+# Mageia
+$ urpmi git
+# FreeBSD
+$ pkg install git
+# Solaris 9/10/11 (OpenCSW)
+$ pkgutil -i git
+# Solaris 11 Express
+$ pkg install developer/versioning/git
+# OpenBSD
+$ pkg_add git
+# Alpine
+$ apk add git
+```
+					</script>
+				</section>
+				<section data-markdown>
+### Anpassen der Benutzerinformationen
+
+```bash
+$ git config --global user.name "Roy Trenneman"
+$ git config --global user.email "roy@reynholm-industries.co.uk"
+$ git config --global --list
+user.name=Roy Trenneman
+user.email=roy@reynholm-industries.co.uk
+```
+
+* `--global` ist Benutzer-Kontext, Einstellungen werden in `$HOME/.gitconfig` gespeichert
+* `--local` ist Repository-Kontext, Einstellungen werden in `<repository-folder>/.git/config` gespeichert
+* `--system` ist Host-Kontext, Einstellungen werden in `/etc/gitconfig` gespeichert
+* Benutzer-Kontext überschreibt Host-Kontext, Repository-Kontext überschreibt Benutzer-Kontext
+
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			history: true,
+
+			// More info https://github.com/hakimel/reveal.js#dependencies
+			dependencies: [{
+					src: 'plugin/markdown/marked.js'
+				},
+				{
+					src: 'plugin/markdown/markdown.js'
+				},
+				{
+					src: 'plugin/notes/notes.js',
+					async: true
+				},
+				{
+					src: 'plugin/highlight/highlight.js',
+					async: true,
+					callback: function () {
+						hljs.initHighlightingOnLoad();
+					}
+				}
+			]
+		});
+	</script>
+</body>
+
+</html>

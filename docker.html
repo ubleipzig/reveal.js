@@ -2,167 +2,163 @@
 <html lang="de">
 
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
 
-    <title>Docker und VuFind(2)</title>
+	<title>Docker und VuFind(2)</title>
 
-    <meta name="description" content="what is Docker™ and why should you use it">
-    <meta name="author" content="Ulf Seltmann">
+	<meta name="description" content="what is Docker™ and why should you use it">
+	<meta name="author" content="Ulf Seltmann">
 
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="css/reveal.min.css">
-    <link rel="stylesheet" href="css/theme/docker.css" id="theme">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/docker.css" id="theme">
 
-    <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+	<!-- For syntax highlighting -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
 
-    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
-    <script>
-        if (window.location.search.match(/print-pdf/gi)) {
-            var link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.type = 'text/css';
-            link.href = 'css/print/pdf.css';
-            document.getElementsByTagName('head')[0].appendChild(link);
-        }
-    </script>
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
 
-    <!--[if lt IE 9]>
+	<!--[if lt IE 9]>
     <script src="lib/js/html5shiv.js"></script>
     <![endif]-->
 </head>
 
 <body>
 
-<div class="reveal">
-    <!-- Any section element inside of this container is displayed as a slide -->
-    <div class="slides">
-        <section>
-            <div class="row">
-                <img data-src="images/docker/logo-notext.png" width="500" class="frontscreen"/>
-            </div>
-            <div class="row">
-                <p>eine Vorstellung der Container-Virtualisierung</p>
-                <h2>Docker</h2>
-                <p>und ihr Einsatz in der Entwicklung von VuFind(2)</p>
-                <p>
-                    <small>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
+	<div class="reveal">
+		<!-- Any section element inside of this container is displayed as a slide -->
+		<div class="slides">
+			<section>
+				<div class="row">
+					<img data-src="images/docker/logo-notext.png" width="500" class="frontscreen" />
+				</div>
+				<div class="row">
+					<p>eine Vorstellung der Container-Virtualisierung</p>
+					<h2>Docker</h2>
+					<p>und ihr Einsatz in der Entwicklung von VuFind(2)</p>
+					<p>
+						<small>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
                         Webmaster<br>
                         Projekt finc<br>
                         Universitätsbibliothek Leipzig<br>
                     </small>
-                    <img data-src="images/ubl-logo.png" class="frontscreen" height="50"> <img data-src="images/finc-logo.png" class="frontscreen" height="50">
-                </p>
-            </div>
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://www.geeek.org/boot2docker-utilisez-docker-sur-windows-et-mac-en-deux-clics-026.html</i></small>
-            <aside class="notes">
-                <ul>
-                    <li>Containervirtualisierung Docker vorstellen</li>
-                    <li>wie Entwicklungstestumgebung für vufind2 Entwicklern die tägliche Arbeit erleichtert</li>
-                </ul>
-            </aside>
-        </section>
-        <section data-state="header1" data-background="images/docker/logo-notext.png" data-background-size="200px"
-                 data-background-position="750px 30px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://www.geeek.org/boot2docker-utilisez-docker-sur-windows-et-mac-en-deux-clics-026.html</i></small>
-            <section>
-                <h3>Über mich</h3>
-                <ul>
-                    <li>2000 bis 2007 Administrator im Web-/Linux-Umfeld</li>
-                    <li>2007 Programmierer für PHP im Bereich e-Commerce</li>
-                    <li>seit April 2013 Programmierer in der UB Leipzig,<br> erst im Projekt finc, jetzt als Webmaster
-                    </li>
-                    </li>
-                </ul>
-                <aside class="notes">
-                    <ul>
-                        <li>2013 als PHP-Entwickler im finc-Team an vufind gearbeitet</li>
-                        <li>2014 als Webmaster Betreuung weiterer Projekte übernommen</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <h3>warum eine einheitliche Testumgebung</h3>
-                <ul>
-                    <li>Vermeidung von unterschiedlichen Ergebnissen</li>
-                    <li>eigene und Projekt-Tools out-of-the-Box nutzbar</li>
-                    <li>einfaches Umschalten der Testumgebung</li>
-                </ul>
-                <aside class="notes">
-                    <ul>
-                        <li>unterschiedliche Konfiguration</li>
-                        <li>unterschiedliche Versionen</li>
-                        <li>Entwicklungswerkzeuge schwierig zu installieren</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <h3>Was ist Docker</h3>
-                <ul>
-                    <li>Containervirtualisierung für linuxoide Betriebssysteme</li>
-                    <li>ein Container ist der isolierte Bereich, in dem das Programm ausgeführt wird</li>
-                    <li>ein Image beinhaltet die notwendigen Abhängigkeiten eines auszuführendes Programmes</li>
-                    <li>Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>, <i>chroot</i> und <i>selinux</i>
-                        vom Host-System isoliert
-                    </li>
-                </ul>
-                <aside class="notes">
-                    <ul>
-                        <li>unterscheidet in images und container</li>
-                        <li>Kernel reserviert abgetrennten Bereich für Container</li>
-                        <li>Host-Resourcen können im Container eingebunden werden</li>
-                        <li>image stellt werkzeugsammlung für container dar</li>
-                        <li>für Isolierung werden Linux-Kernel-Funktionen benutzt</li>
-                    </ul>
-                </aside>
-            </section>
-        </section>
-        <section data-state="header2" data-background="images/docker/docker-image.png" data-background-size="200px"
-                 data-background-position="750px 30px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i></small>
-            <section>
-                <h3>Docker-Images</h3>
-                <ul>
-                    <li>leitet ab von Basis-Image</li>
-                    <li><code>Dockerfile</code> beschreibt die zusätzliche Installation/Konfiguration</li>
-                    <li>Image-Änderungen werden revisioniert</li>
-                    <li>Images werden ver-/ge-teilt über öffentliches oder privates Repository</li>
-                </ul>
-                <aside class="notes">
-                    <ul>
-                        <li>vergleichbar mit einem vorinstallierten System, einer Live-CD</li>
-                        <li>organisiert in Schichten mittels Overlay-Dateisystem</li>
-                        <li>funktioniert ähnlich wie Versionskontrollsysteme</li>
-                        <li>in Images wird alles installiert und konfiguriert, soweit es automatisch möglich ist</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <h3>Docker-Container</h3>
-                <ul>
-                    <li>basieren auf einem Image</li>
-                    <li>startet mit dem Start eines Programms und beendet mit dessen Beendigung</li>
-                    <li>können Dateien und Order des Hostsystems oder anderer Container einbinden</li>
-                    <li>können Ports an das Hostsystem oder andere Container forwarden</li>
-                </ul>
-                <aside class="notes">
-                    <ul>
-                        <li>bilden die Laufzeitumgebung eines Programmes</li>
-                        <li>individuelle Konfiguration bei Container-Erzeugung</li>
-                        <li>native Linux-Funktionen zur Ressourcenteilung</li>
-                        <li>sehr performant</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <h3>Hello World!</h3>
-                <pre class="fragment"><code class="bash">docker run --name "hello-world" ubuntu echo "Hello World!"</code></pre>
-                <div class="fragment">
-                            <pre><code class="bash">Unable to find image 'ubuntu:latest' locally
+						<img data-src="images/ubl-logo.png" class="frontscreen" height="50"> <img data-src="images/finc-logo.png" class="frontscreen"
+						  height="50">
+					</p>
+				</div>
+				<footer><small>Bildquelle: <i>http://www.geeek.org/boot2docker-utilisez-docker-sur-windows-et-mac-en-deux-clics-026.html</i></small></footer>
+				<aside class="notes">
+					<ul>
+						<li>Containervirtualisierung Docker vorstellen</li>
+						<li>wie Entwicklungstestumgebung für vufind2 Entwicklern die tägliche Arbeit erleichtert</li>
+					</ul>
+				</aside>
+			</section>
+			<section data-background-image="images/docker/logo-notext.png" data-background-size="auto 150px" data-background-position="right 10% top 10%">
+				<footer><small>Bildquelle: <i>http://www.geeek.org/boot2docker-utilisez-docker-sur-windows-et-mac-en-deux-clics-026.html</i></small></footer>
+				<section>
+					<h3>Über mich</h3>
+					<ul>
+						<li>2000 bis 2007 Administrator im Web-/Linux-Umfeld</li>
+						<li>2007 Programmierer für PHP im Bereich e-Commerce</li>
+						<li>seit April 2013 Programmierer in der UB Leipzig,<br> erst im Projekt finc, jetzt als Webmaster
+						</li>
+						</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>2013 als PHP-Entwickler im finc-Team an vufind gearbeitet</li>
+							<li>2014 als Webmaster Betreuung weiterer Projekte übernommen</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>warum eine einheitliche Testumgebung</h3>
+					<ul>
+						<li>Vermeidung von unterschiedlichen Ergebnissen</li>
+						<li>eigene und Projekt-Tools out-of-the-Box nutzbar</li>
+						<li>einfaches Umschalten der Testumgebung</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>unterschiedliche Konfiguration</li>
+							<li>unterschiedliche Versionen</li>
+							<li>Entwicklungswerkzeuge schwierig zu installieren</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>Was ist Docker</h3>
+					<ul>
+						<li>Containervirtualisierung für linuxoide Betriebssysteme, ab Windows 10 nativ unter Windows</li>
+						<li>ein Container ist der isolierte Bereich, in dem das Programm ausgeführt wird</li>
+						<li>ein Image beinhaltet die notwendigen Abhängigkeiten eines auszuführendes Programmes</li>
+						<li>Resourcen werden per <i>kernel namespaces</i>, <i>cgroups</i>, <i>chroot</i> und <i>selinux</i> vom Host-System isoliert
+						</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>unterscheidet in images und container</li>
+							<li>Kernel reserviert abgetrennten Bereich für Container</li>
+							<li>Host-Resourcen können im Container eingebunden werden</li>
+							<li>image stellt werkzeugsammlung für container dar</li>
+							<li>für Isolierung werden Linux-Kernel-Funktionen benutzt</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section data-background-image="images/docker/docker-image.png" data-background-size="auto 150px" data-background-position="right 10% top 10%">
+				<footer><small>Bildquelle: <i>http://xebia.github.io/docker-introduction/slides/#/</i></small></footer>
+				<section>
+					<h3>Docker-Images</h3>
+					<ul>
+						<li>leitet ab von Basis-Image</li>
+						<li><code>Dockerfile</code> beschreibt die zusätzliche Installation/Konfiguration</li>
+						<li>Image-Änderungen werden revisioniert</li>
+						<li>Images werden ver-/ge-teilt über öffentliches oder privates Repository</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>vergleichbar mit einem vorinstallierten System, einer Live-CD</li>
+							<li>organisiert in Schichten mittels Overlay-Dateisystem</li>
+							<li>funktioniert ähnlich wie Versionskontrollsysteme</li>
+							<li>in Images wird alles installiert und konfiguriert, soweit es automatisch möglich ist</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>Docker-Container</h3>
+					<ul>
+						<li>basieren auf einem Image</li>
+						<li>startet mit dem Start eines Programms und beendet mit dessen Beendigung</li>
+						<li>können Dateien und Order des Hostsystems oder anderer Container einbinden</li>
+						<li>können Ports an das Hostsystem oder andere Container forwarden</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>bilden die Laufzeitumgebung eines Programmes</li>
+							<li>individuelle Konfiguration bei Container-Erzeugung</li>
+							<li>native Linux-Funktionen zur Ressourcenteilung</li>
+							<li>sehr performant</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>Hello World!</h3>
+					<pre class="fragment"><code class="bash">$# docker run --name "hello-world" ubuntu echo "Hello World!"</code></pre>
+					<div class="fragment">
+						<pre><code class="bash">Unable to find image 'ubuntu:latest' locally
 Pulling repository ubuntu
 91e54dfb1179: Download complete
 d3a1f33e8a5a: Download complete
@@ -170,308 +166,300 @@ c22013c84729: Download complete
 d74508fb6632: Download complete
 Status: Downloaded newer image for ubuntu:latest
 Hello World!
-#$
+$#
                             </code></pre>
-                    <ul>
-                        <li><i>run</i>-Kommando legt die Container-Konfiguration fest</li>
-                    </ul>
-                </div>
-                <aside class="notes">
-                    <ul>
-                        <li>"Hello World!"-Beispiel auch für Docker</li>
-                        <li>"docker run" erzeugt einen Container</li>
-                        <li>führt übergebenes oder in Image konfiguriertes Kommando aus</li>
-                        <li>beendet Container, wenn Kommando-Ausführung abgeschlossen</li>
-                        <li>Container wird nicht gelöscht</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <h3>Hello World! (Again)</h3>
-                <pre class="fragment"><code class="bash">docker start -i -a hello-world</code></pre>
-                <div class="fragment">
-                            <pre><code class="bash">Hello World!
-#$
+						<ul>
+							<li><i>run</i>-Kommando legt die Container-Konfiguration fest</li>
+						</ul>
+					</div>
+					<aside class="notes">
+						<ul>
+							<li>"Hello World!"-Beispiel auch für Docker</li>
+							<li>"docker run" erzeugt einen Container</li>
+							<li>führt übergebenes oder in Image konfiguriertes Kommando aus</li>
+							<li>beendet Container, wenn Kommando-Ausführung abgeschlossen</li>
+							<li>Container wird nicht gelöscht</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>Hello World! (Again)</h3>
+					<pre class="fragment"><code class="bash">$# docker start -i -a hello-world</code></pre>
+					<div class="fragment">
+						<pre><code class="bash">Hello World!
+$#
                             </code></pre>
-                    <ul>
-                        <li>erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
-                            <i>run</i>-Kommando festgelegt wurde
-                        </li>
-                    </ul>
-                </div>
-                <aside class="notes">
-                    <ul>
-                        <li>"docker start" startet vorhandenen Container mit dessen Kommando</li>
-                        <li>gleiche Konfiguration, wie mit "docker run" festgelegt</li>
-                        <li>-a und -i verbindet die Standard-Eingabe mit unserem Terminal</li>
-                    </ul>
+						<ul>
+							<li>erneute Container-Starts führen den Container mit der Konfiguration aus, die mit dem
+								<i>run</i>-Kommando festgelegt wurde
+							</li>
+						</ul>
+					</div>
+					<aside class="notes">
+						<ul>
+							<li>"docker start" startet vorhandenen Container mit dessen Kommando</li>
+							<li>gleiche Konfiguration, wie mit "docker run" festgelegt</li>
+							<li>-a und -i verbindet die Standard-Eingabe mit unserem Terminal</li>
+						</ul>
 
-                </aside>
-            </section>
-        </section>
-        <section data-background="images/docker/vufind-image.png" data-background-size="160px"
-                 data-background-position="780px 20px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://www.opengeekservice.cl/sitio/es/bibliotecas/vufind.html</i></small>
-            <h3>Vufind2 mit Docker</h3>
-            <section>
-                <p>VuFind-Sourcen klonen</p>
-                <pre class="fragment"><code class="bash">git clone https://github.com/vufind-org/vufind.git</code></pre>
-                <pre class="fragment"><code class="bash">Klone nach 'vufind'...
+					</aside>
+				</section>
+			</section>
+			<section data-background-image="images/docker/vufind-image.png" data-background-size="auto 150px" data-background-position="right 10% top 10%">
+				<footer><small>Bildquelle: <i>http://www.opengeekservice.cl/sitio/es/bibliotecas/vufind.html</i></small></footer>
+				<h3>Vufind2 mit Docker</h3>
+				<section>
+					<p>VuFind-Sourcen klonen</p>
+					<pre class="fragment"><code class="bash">$# git clone https://github.com/vufind-org/vufind.git</code></pre>
+					<pre class="fragment"><code class="bash">Klone nach 'vufind'...
 remote: Counting objects: 106741, done.
 remote: Compressing objects: 100% (20/20), done.
 remote: Total 106741 (delta 6), reused 0 (delta 0), pack-reused 106720
 Empfange Objekte: 100% (106741/106741), 388.15 MiB | 3.83 MiB/s, Fertig.
 Löse Unterschiede auf: 100% (69166/69166), Fertig.
 Prüfe Konnektivität... Fertig.
+$#
                 </code></pre>
-                <aside class="notes">
-                    <ul>
-                        <li>wie entwickelt man vufind2 mit docker?</li>
-                        <li>benötigt vufind2-sourcen</li>
-                        <li>klont das VuFind-Repository in den Ordner "vufind"</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <p>VuFind-Container starten</p>
-                <pre class="fragment"><code class="bash">sudo docker run -t -i \
+					<aside class="notes">
+						<ul>
+							<li>wie entwickelt man vufind2 mit docker?</li>
+							<li>benötigt vufind2-sourcen</li>
+							<li>klont das VuFind-Repository in den Ordner "vufind"</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<p>VuFind-Container starten</p>
+					<pre class="fragment"><code class="bash">$# sudo docker run -t -i \
     -v $(pwd)/vufind:/usr/local/vufind2 \
     -p 80:80 -p 443:443 -p 8080:8080 -p 3306:3306 \
-    useltmann/vufind2</code></pre>
-                <pre class="fragment"><code>Unable to find image 'useltmann/vufind2:latest' locally
-Pulling repository useltmann/vufind2
+    ubleipzig/vufind2</code></pre>
+					<pre class="fragment"><code>Unable to find image 'ubleipzig/vufind2:latest' locally
+Pulling repository ubleipzig/vufind2
 dbce69cc9264: Download complete
 4c8cbfd2973e: Download complete
 ...
 138278fd23d3: Download complete
-Status: Downloaded newer image for useltmann/vufind2:latest
+Status: Downloaded newer image for ubleipzig/vufind2:latest
 Setting up owner/group of dev...
 Setting up runtime environment...
 Setting up 10-mysqld...
 ...
                 </code></pre>
-                <aside class="notes">
-                    <ul>
-                        <li>"-t" und "-i" verbindet die Standard-Eingabe mit Terminal</li>
-                        <li>"-v" welche lokalen Dateien oder Ordner wo verfügbar</li>
-                        <li>"-p" welche Ports wo verfügbar</li>
-                        <li>"-v" und "-p" mehrfach möglich</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <p>Container aufrufen</p>
-                <img data-src="images/docker/vufind2.png" width="900"/><br>
-                <code>http://localhost/vufind/</code>
-            </section>
-            <section>
-                <p>ausführliche Dokumentation</p>
-                <img data-src="images/docker/docker-hub.png" width="900"/>
-                <ul>
-                    <li>Suche nach <i>vufind2</i></li>
-                    <li>erfüllt alle Anforderungen von VuFind2</li>
-                    <li>als Entwicklungstestumgebung (DTE) konzipiert</li>
-                </ul>
-                <aside class="notes">
-                    <ul>
-                        <li>ausführliche Dokumentation zum Image auf Docker Hub</li>
-                        <li>lässt sich einfach finden, da derzeit einziges vufind2-image</li>
-                        <li>Benutzung ist hier dokumentiert</li>
-                        <li>individuelle Konfiguration möglich</li>
-                        <li>Einsatz im produktiven Bereich nicht empfohlen</li>
-                    </ul>
-                </aside>
-            </section>
-        </section>
-        <section data-background="images/docker/image-tools.png" data-background-size="200px"
-                 data-background-position="750px 30px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>https://commons.wikimedia.org/wiki/User:Eurobas</i></small>
-            <h3>Die Image-Tools</h3>
-            <section>
-                <p>PHP-Einstellungen mit <i>PHPInfo</i></p>
-                <img data-src="images/docker/phpinfo.png" width="900"/><br>
-                <code>http://localhost/phpinfo/</code>
-                <aside class="notes">
-                    <ul>
-                        <li>zeigt PHP-Konfiguration und installierte Erweiterungen</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <p>Debugging mit <i>XDebug</i></p>
-                <img data-src="images/docker/xdebug.png" width="750"/>
-                <img data-src="images/docker/xdebug-helper-debug.png" width="150"/>
-                <aside class="notes">
-                    <ul>
-                        <li>komfortabler als var_dump()</li>
-                        <li>in IDE localhost als xdebug-server konfigurieren</li>
-                        <li>mit chrome-extension xdebug-helper aktivieren</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <p>Profiling mit <i>XDebug</i> und <i>webgrind</i></p>
-                <img data-src="images/docker/webgrind.png" width="750"/>
-                <img data-src="images/docker/xdebug-helper-profile.png" width="150"/><br>
-                <code>http://localhost/webgrind/</code>
-                <aside class="notes">
-                    <ul>
-                        <li>Webgrind ist Webanwendung und wertet Trace-Protokolle aus</li>
-                        <li>XDebug erstellt Trace-Protokolle</li>
-                        <li>mit chrome-extension xdebug-helper lässt sich Profiling aktivieren</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <p>OPCode- und Variable Cache mit <i>XCache</i></p>
-                <img data-src="images/docker/xcache.png" width="750"/><br>
-                <code>http://localhost/xcache/</code>
-                <aside class="notes">
-                    <ul>
-                        <li>XCache ist Erweiterung in PHP</li>
-                        <li>OPCode-Cache beschleunigt Scriptkompilierung </li>
-                        <li>Variable-Cache ist Request-übergreifender Speicher bspw. für Sessiondaten</li>
-                        <li>XCache bietet eine API für Variable-Cache</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <p><i>PHPUnit</i></p>
-                <pre><code>sudo docker run --rm -t -i -v $(pwd)/vufind:/usr/local/vufind2 \
-        useltmann/vufind2 phpunit</code></pre>
-                <pre><code>PHPUnit 4.8.9 by Sebastian Bergmann and contributors.
+					<aside class="notes">
+						<ul>
+							<li>"-t" und "-i" verbindet die Standard-Eingabe mit Terminal</li>
+							<li>"-v" welche lokalen Dateien oder Ordner wo verfügbar</li>
+							<li>"-p" welche Ports wo verfügbar</li>
+							<li>"-v" und "-p" mehrfach möglich</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<p>Container aufrufen</p>
+					<img data-src="images/docker/vufind2.png" width="900" /><br>
+					<code>http://localhost/vufind/</code>
+				</section>
+				<section>
+					<p>ausführliche Dokumentation</p>
+					<img data-src="images/docker/docker-hub.png" width="900" />
+					<ul>
+						<li>Suche nach <i>vufind2</i></li>
+						<li>erfüllt alle Anforderungen von VuFind2</li>
+						<li>als Entwicklungstestumgebung (DTE) konzipiert</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>ausführliche Dokumentation zum Image auf Docker Hub</li>
+							<li>lässt sich einfach finden, da derzeit einziges vufind2-image</li>
+							<li>Benutzung ist hier dokumentiert</li>
+							<li>individuelle Konfiguration möglich</li>
+							<li>Einsatz im produktiven Bereich nicht empfohlen</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section data-background-image="images/docker/image-tools.png" data-background-size="150px auto" data-background-position="right 10% top 10%">
+				<footer><small>Bildquelle: <i>https://commons.wikimedia.org/wiki/User:Eurobas</i></small></footer>
+				<h3>Die Image-Tools</h3>
+				<section>
+					<p>PHP-Einstellungen mit <i>PHPInfo</i></p>
+					<img data-src="images/docker/phpinfo.png" width="900" /><br>
+					<code>http://localhost/phpinfo/</code>
+					<aside class="notes">
+						<ul>
+							<li>zeigt PHP-Konfiguration und installierte Erweiterungen</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<p>Debugging mit <i>XDebug</i></p>
+					<img data-src="images/docker/xdebug.png" width="750" />
+					<img data-src="images/docker/xdebug-helper-debug.png" width="150" />
+					<aside class="notes">
+						<ul>
+							<li>komfortabler als var_dump()</li>
+							<li>in IDE localhost als xdebug-server konfigurieren</li>
+							<li>mit chrome-extension xdebug-helper aktivieren</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<p>Profiling mit <i>XDebug</i> und <i>webgrind</i></p>
+					<img data-src="images/docker/webgrind.png" width="750" />
+					<img data-src="images/docker/xdebug-helper-profile.png" width="150" /><br>
+					<code>http://localhost/webgrind/</code>
+					<aside class="notes">
+						<ul>
+							<li>Webgrind ist Webanwendung und wertet Trace-Protokolle aus</li>
+							<li>XDebug erstellt Trace-Protokolle</li>
+							<li>mit chrome-extension xdebug-helper lässt sich Profiling aktivieren</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<p><i>PHPUnit</i></p>
+					<pre><code>sudo docker run --rm -t -i -v $(pwd)/vufind:/usr/local/vufind2 \
+        ubleipzig/vufind2 phpunit</code></pre>
+					<pre><code>PHPUnit 4.8.9 by Sebastian Bergmann and contributors.
 ....
 Time: 9.07 seconds, Memory: 95.00Mb
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 801, Assertions: 2137, Skipped: 36.</code></pre>
-                <aside class="notes">
-                    <ul>
-                        <li>phpunit ist Bestandteil der vufind2-Community</li>
-                        <li>Demian Katz wünscht sich Unit-Tests für Community-Features</li>
-                        <li>eigene Entwicklung sollte im Vorfeld geprüft werden</li>
-                    </ul>
-                </aside>
-            </section>
+					<aside class="notes">
+						<ul>
+							<li>phpunit ist Bestandteil der vufind2-Community</li>
+							<li>Demian Katz wünscht sich Unit-Tests für Community-Features</li>
+							<li>eigene Entwicklung sollte im Vorfeld geprüft werden</li>
+						</ul>
+					</aside>
+				</section>
 
-        </section>
-        <section data-background="images/opensource.png" data-background-size="150px"
-                 data-background-position="780px 30px">
-            <small style="position:absolute;top:750px; left:10px">Bildquelle: <i>http://openitagency.eu/open-source/</i></small>
-            <section>
-                <h3>Build-Sourcen auf GitHub</h3>
-                <img data-src="images/docker/github.png" width="900"/><br>
-                <code>https://github.com/finc/docker-vufind2/</code>
-                <aside class="notes">
-                    <ul>
-                        <li>build-Sourcen auf github</li>
-                        <li>weitere Tools werden integriert</li>
-                        <li>fehler können hier gemeldet werden</li>
-                        <li>Pull-Request können gestellt werden</li>
-                    </ul>
-                </aside>
-            </section>
-            <section>
-                <h3>Image auf Docker Hub</h3>
-                <img data-src="images/docker/vufind2-image.png" width="900"/><br>
-                <code>https://hub.docker.com/r/useltmann/vufind2/</code>
-                <aside class="notes">
-                    <ul>
-                        <li>image öffentlich auf docker hub</li>
-                        <li>Anleitung findet sich hier</li>
-                    </ul>
-                </aside>
-            </section>
-        </section>
-        <section>
-            <div class="row">
-                <img data-src="images/docker/docker-all-the-things.png"/>
-            </div>
-            <div class="row">
-                <h3>Vielen Dank</h3>
-                <p>
-                    <small>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
+			</section>
+			<section data-background-image="images/opensource.png" data-background-size="auto 150px" data-background-position="right 10% top 10%">
+				<footer><small>Bildquelle: <i>http://openitagency.eu/open-source/</i></small></footer>
+				<section>
+					<h3>Build-Sourcen auf GitHub</h3>
+					<img data-src="images/docker/github.png" width="800" /><br>
+					<code>https://github.com/finc/docker-vufind2/</code>
+					<aside class="notes">
+						<ul>
+							<li>build-Sourcen auf github</li>
+							<li>weitere Tools werden integriert</li>
+							<li>fehler können hier gemeldet werden</li>
+							<li>Pull-Request können gestellt werden</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>Image auf Docker Hub</h3>
+					<img data-src="images/docker/vufind2-image.png" width="800" /><br>
+					<code>https://hub.docker.com/r/ubleipzig/vufind2/</code>
+					<aside class="notes">
+						<ul>
+							<li>image öffentlich auf docker hub</li>
+							<li>Anleitung findet sich hier</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section>
+				<div class="row">
+					<img data-src="images/docker/docker-all-the-things.png" />
+				</div>
+				<div class="row">
+					<h3>Vielen Dank</h3>
+					<p>
+						<small>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;<br>
                         Webmaster<br>
                         Projekt finc<br>
                         Universitätsbibliothek Leipzig<br>
                     </small>
-                    <img data-src="images/ubl-logo.png" class="frontscreen" height="50">
-                    <img data-src="images/finc-logo.png" class="frontscreen" height="50">
-                    <img data-src="images/vufind2-logo.png" class="frontscreen" height="50">
-                </p>
-                <small>
+						<img data-src="images/ubl-logo.png" class="frontscreen" height="50">
+						<img data-src="images/finc-logo.png" class="frontscreen" height="50">
+						<img data-src="images/vufind2-logo.png" class="frontscreen" height="50">
+					</p>
+					<small>
                 <ul>
-                    <li>https://hub.docker.com/r/useltmann/vufind2/</li>
+                    <li>https://hub.docker.com/r/ubleipzig/vufind2/</li>
                     <li>https://github.com/finc/docker-vufind2/</li>
                     <li>https://finc.info/de/</li>
                     <li>https://ub.uni-leipzig.de/</li>
                 </ul>
                 </small>
-            </div>
-        </section>
-    </div>
-</div>
+				</div>
+			</section>
+		</div>
+	</div>
 
-<script src="lib/js/head.min.js"></script>
-<script src="js/reveal.min.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.min.js"></script>
 
-<script>
+	<script>
+		// Full list of configuration options available here:
+		// https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			history: true,
+			center: true,
+			margin: 0.1,
+			minScale: 0.2,
+			maxScale: 0.8,
+			width: 1024,
+			height: 768,
+			//        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+			transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+			pdfMaxPagesPerSlide: 1,
+			// Parallax scrolling
+			// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+			// parallaxBackgroundSize: '2100px 900px',
 
-    // Full list of configuration options available here:
-    // https://github.com/hakimel/reveal.js#configuration
-    Reveal.initialize({
-        controls: true,
-        progress: true,
-        history: true,
-        center: true,
-        margin: 0.1,
-        minScale: 0.2,
-        maxScale: 0.8,
-        width: 1024,
-        height: 768,
-        //        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-        transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
-
-        // Parallax scrolling
-        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-        // parallaxBackgroundSize: '2100px 900px',
-
-        // Optional libraries used to extend on reveal.js
-        dependencies: [
-            {
-                src: 'lib/js/classList.js', condition: function () {
-                return !document.body.classList;
-            }
-            },
-            {
-                src: 'plugin/markdown/marked.js', condition: function () {
-                return !!document.querySelector('[data-markdown]');
-            }
-            },
-            {
-                src: 'plugin/markdown/markdown.js', condition: function () {
-                return !!document.querySelector('[data-markdown]');
-            }
-            },
-            {
-                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
-                hljs.initHighlightingOnLoad();
-            }
-            },
-            {
-                src: 'plugin/zoom-js/zoom.js', async: true, condition: function () {
-                return !!document.body.classList;
-            }
-            },
-            {
-                src: 'plugin/notes/notes.js', async: true, condition: function () {
-                return !!document.body.classList;
-            }
-            }
-        ]
-    });
-
-</script>
+			// Optional libraries used to extend on reveal.js
+			dependencies: [{
+					src: 'lib/js/classList.js',
+					condition: function () {
+						return !document.body.classList;
+					}
+				},
+				{
+					src: 'plugin/markdown/marked.js',
+					condition: function () {
+						return !!document.querySelector('[data-markdown]');
+					}
+				},
+				{
+					src: 'plugin/markdown/markdown.js',
+					condition: function () {
+						return !!document.querySelector('[data-markdown]');
+					}
+				},
+				{
+					src: 'plugin/highlight/highlight.js',
+					async: true,
+					callback: function () {
+						hljs.initHighlightingOnLoad();
+					}
+				},
+				{
+					src: 'plugin/zoom-js/zoom.js',
+					async: true,
+					condition: function () {
+						return !!document.body.classList;
+					}
+				},
+				{
+					src: 'plugin/notes/notes.js',
+					async: true,
+					condition: function () {
+						return !!document.body.classList;
+					}
+				}
+			]
+		});
+	</script>
 
 </body>
+
 </html>
