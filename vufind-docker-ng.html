@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/vufind-docker-ng.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section class="bigshape">
+				<img data-src="images/vufind-docker-ng/logo.png" height="200px">
+				<h2>VuFind-Docker NG</h2>
+				<dl>
+					<dt>
+							VuFind-Ökosystem mit Docker
+					</dt>
+					<dd>
+						<small>
+							<table>
+								<tr>
+									<th>Autor:</th>
+									<td>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;</td>
+								</tr>
+								<tr>
+									<th>erstellt am:</th>
+									<td>11.04.2018</td>
+								</tr>
+							</table>
+						</small>
+					</dd>
+				</dl>
+			</section>
+			<section class="mediumshape">
+				<h1>Agenda</h1>
+				<ol>
+					<li class="fragment">Teil
+						<ul>
+							<li>Probleme bei der Entwicklung</li>
+							<li>an VuFind beteiligte Services</li>
+							<li>Lessons learned aus dem ersten Docker-Image</li>
+						</ul>
+					</li>
+					<li class="fragment">Teil
+						<ul>
+							<li>
+								<i>Docker Compose</i>
+							</li>
+							<li>Integration in Workflow</li>
+						</ul>
+					</li>
+				</ol>
+				<aside class="notes">
+					<ol>
+						<li>Teil
+							<ul>
+								<li>weshalb macht es Sinn, eine einheitliche Entwicklungsumgebung zu erstellen</li>
+								<li>VuFind ist ein Zusammenspiel aus diversen Diensten, die miteinander kommunizieren</li>
+								<li>welche Fehler wurden beim ersten Docker-Image gemacht</li>
+							</ul>
+						</li>
+						<li>
+							<ul>
+								<li>wie
+									<i>docker-compose</i> den Umgang mit Docker erleichtert</li>
+								<li>wie sich Docker in unser Workflow integrieren lässt</li>
+							</ul>
+						</li>
+					</ol>
+				</aside>
+			</section>
+			<section class="mediumshape">
+				<h2>Probleme bei der Entwicklung</h2>
+				<ul>
+					<li class="fragment">abweichende Standard-Konfiguration auf unterschiedlichen Betriebssystemen</li>
+					<li class="fragment">aufwendige Vorabkonfiguration der beteiligten Services</li>
+					<li class="fragment">komplexe Einstellungsmöglichkeiten beeinflussen das Ergebnis</li>
+					<li class="fragment">Ressourcen unterschiedlicher Entwicklungsumgebungen überschneiden sich</li>
+				</ul>
+			</section>
+			<section class="mediumshape">
+				<h2>an VuFind beteiligte Services</h2>
+				<ul>
+					<li class="fragment" data-fragment-index="1">PHP</li>
+					<li class="fragment" data-fragment-index="2">Apache2</li>
+					<li class="fragment" data-fragment-index="3">MySQL</li>
+					<li class="fragment" data-fragment-index="4">
+						<span class="fragment semi-fade-out" data-fragment-index="5">Solr</span>
+					</li>
+				</ul>
+				<aside class="notes">
+					<ul>
+						<li>PHP ist der Applikationsserver:
+							<ul>
+								<li>führt VuFind aus und prozessiert Benutzereingaben</li>
+								<li>ist das Bindeglied aller beteiligter Services</li>
+							</ul>
+						</li>
+						<li>Apache2 ist der Webserver
+							<ul>
+								<li>Schnittstelle zwischen Benutzer und VuFind</li>
+								<li>nimmt Benutzereingaben entgegen</li>
+								<li>gibt Benutzereingaben an VuFind</li>
+								<li>übermittelt statische Inhalte wie Theme und Layout an den Benutzer</li>
+								<li>übermittelt dynamische Inhalte, prozessiert von VuFind an den Benutzer</li>
+							</ul>
+						</li>
+						<li>MySQL ist der Datanbankserver
+							<ul>
+								<li>benutzerrelevante Inhalte</li>
+								<li>VuFind-spezifische Laufzeitinformationen, wie Sessiondaten</li>
+							</ul>
+						</li>
+						<li>Solr ist der Indexserver
+							<ul>
+								<li>stellt die eigentlichen Katalog-Informationen zur Verfügung</li>
+								<li>keine Docker-Komponente, da Aufbau zu komplex</li>
+							</ul>
+						</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="mediumshape">
+				<h2>
+					<i>Docker Compose</i>
+				</h2>
+				<ul>
+					<li class="fragment" data-fragment-index="1">beschreibt Services </li>
+					<li class="fragment" data-fragment-index="2">Apache2</li>
+					<li class="fragment" data-fragment-index="3">MySQL</li>
+					<li class="fragment" data-fragment-index="4">Volumes
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			history: true,
+
+			// More info https://github.com/hakimel/reveal.js#dependencies
+			dependencies: [{
+					src: 'plugin/markdown/marked.js'
+				},
+				{
+					src: 'plugin/markdown/markdown.js'
+				},
+				{
+					src: 'plugin/notes/notes.js',
+					async: true
+				},
+				{
+					src: 'plugin/highlight/highlight.js',
+					async: true,
+					callback: function () {
+						hljs.initHighlightingOnLoad();
+					}
+				}
+			]
+		});
+	</script>
+</body>
+
+</html>
