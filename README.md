@@ -1,6 +1,6 @@
 # Slides
 
-This repository holds a number of slides created with the free open source tool [reveal.js](https://github.com/hakimel/reveal.js)
+A framework for easily creating beautiful presentations using HTML. [Check out the live demo](http://revealjs.com/).
 
 you can watch that slides here: [https://services.ub.uni-leipzig.de/slides/](https://services.ub.uni-leipzig.de/slides/)
 
