@@ -31,7 +31,7 @@
 				<h2>VuFind-Docker NG</h2>
 				<dl>
 					<dt>
-							VuFind-Ökosystem mit Docker
+						VuFind-Ökosystem mit Docker
 					</dt>
 					<dd>
 						<small>
@@ -51,50 +51,39 @@
 			</section>
 			<section class="mediumshape">
 				<h1>Agenda</h1>
-				<ol>
-					<li class="fragment">Teil
-						<ul>
-							<li>Probleme bei der Entwicklung</li>
-							<li>an VuFind beteiligte Services</li>
-							<li>Lessons learned aus dem ersten Docker-Image</li>
-						</ul>
+				<ul>
+					<li class="fragment">Lessons learned aus dem ersten Docker-Image</li>
+					<li class="fragment">an VuFind beteiligte Services</li>
+					<li class="fragment">Container-Ökosystem</li>
+					<li class="fragment">Integration in das Workflow</li>
 					</li>
-					<li class="fragment">Teil
-						<ul>
-							<li>
-								<i>Docker Compose</i>
-							</li>
-							<li>Integration in Workflow</li>
-						</ul>
-					</li>
-				</ol>
-				<aside class="notes">
-					<ol>
-						<li>Teil
+					<aside class="notes">
+						<small>
 							<ul>
-								<li>weshalb macht es Sinn, eine einheitliche Entwicklungsumgebung zu erstellen</li>
-								<li>VuFind ist ein Zusammenspiel aus diversen Diensten, die miteinander kommunizieren</li>
 								<li>welche Fehler wurden beim ersten Docker-Image gemacht</li>
-							</ul>
-						</li>
-						<li>
-							<ul>
-								<li>wie
-									<i>docker-compose</i> den Umgang mit Docker erleichtert</li>
+								<li>VuFind ist ein Zusammenspiel aus diversen Diensten</li>
+								<li>wie sich das neue Ökosystem vom alten unterscheidet</li>
 								<li>wie sich Docker in unser Workflow integrieren lässt</li>
 							</ul>
-						</li>
-					</ol>
-				</aside>
+						</small>
+					</aside>
 			</section>
 			<section class="mediumshape">
-				<h2>Probleme bei der Entwicklung</h2>
+				<h2>
+					Lessons Learned
+				</h2>
 				<ul>
-					<li class="fragment">abweichende Standard-Konfiguration auf unterschiedlichen Betriebssystemen</li>
-					<li class="fragment">aufwendige Vorabkonfiguration der beteiligten Services</li>
-					<li class="fragment">komplexe Einstellungsmöglichkeiten beeinflussen das Ergebnis</li>
-					<li class="fragment">Ressourcen unterschiedlicher Entwicklungsumgebungen überschneiden sich</li>
+					<li class="fragment">unflexibel</li>
+					<li class="fragment">inkompatible Image-Versionen</li>
+					<li class="fragment">Konfigurations-Overhead nicht beseitigt</li>
 				</ul>
+				<aside class="notes">
+					<ul>
+						<li>kein Tausch einzelner Services möglich</li>
+						<li>neues Image zerstörte vorhandene Datenbank</li>
+						<li>Datenbank erstellen war mit erhöhtem Aufwand verbunden</li>
+					</ul>
+				</aside>
 			</section>
 			<section class="mediumshape">
 				<h2>an VuFind beteiligte Services</h2>
@@ -114,7 +103,7 @@
 								<li>ist das Bindeglied aller beteiligter Services</li>
 							</ul>
 						</li>
-						<li>Apache2 ist der Webserver
+						<li>Apache2 ist der Webserver:
 							<ul>
 								<li>Schnittstelle zwischen Benutzer und VuFind</li>
 								<li>nimmt Benutzereingaben entgegen</li>
@@ -123,13 +112,13 @@
 								<li>übermittelt dynamische Inhalte, prozessiert von VuFind an den Benutzer</li>
 							</ul>
 						</li>
-						<li>MySQL ist der Datanbankserver
+						<li>MySQL ist der Datanbankserver:
 							<ul>
 								<li>benutzerrelevante Inhalte</li>
 								<li>VuFind-spezifische Laufzeitinformationen, wie Sessiondaten</li>
 							</ul>
 						</li>
-						<li>Solr ist der Indexserver
+						<li>Solr ist der Indexserver:
 							<ul>
 								<li>stellt die eigentlichen Katalog-Informationen zur Verfügung</li>
 								<li>keine Docker-Komponente, da Aufbau zu komplex</li>
@@ -139,16 +128,111 @@
 				</aside>
 			</section>
 			<section class="mediumshape">
-				<h2>
-					<i>Docker Compose</i>
-				</h2>
-				<ul>
-					<li class="fragment" data-fragment-index="1">beschreibt Services </li>
-					<li class="fragment" data-fragment-index="2">Apache2</li>
-					<li class="fragment" data-fragment-index="3">MySQL</li>
-					<li class="fragment" data-fragment-index="4">Volumes
-					</li>
-				</ul>
+				<section>
+					<h2>
+						Container-Ökosystem
+					</h2>
+					<aside class="notes">
+						Vergleich des alten mit dem neuen
+					</aside>
+				</section>
+				<section class="smallshape">
+					<h3>Services</h3>
+					<small>
+						<table>
+							<tr>
+								<th>
+									<h3>neu:</h3>
+								</th>
+								<th>
+									<h3>alt:</h3>
+								</th>
+							</tr>
+							<tr>
+								<td class="fragment" data-fragment-index="2">
+									<dl>
+										<dt>php</dt>
+										<dd>ubleipzig/vufind-php:5-debug-2</dd>
+										<dt>httpd</dt>
+										<dd>ubleipzig/vufind-httpd:2.4-4</dd>
+										<dt>db</dt>
+										<dd>mariadb:10.2</dd>
+										<dt>smtp</dt>
+										<dd>useltmann/mailcollect:8-1</dd>
+										<dt>grunt</dt>
+										<dd>ubleipzig/vufind-php:5-debug-2</dd>
+										<dt>composer</dt>
+										<dd>ubleipzig/vufind-php:7-debug-2</dd>
+										<dt>autoconfig</dt>
+										<dd>ubleipzig/vufind-php:5-debug-2</dd>
+									</dl>
+								</td>
+								<td class="fragment" data-fragment-index="1">
+									<dl>
+										<dt>lamp</dt>
+										<dd>ubleipzig/vufind2:php54</dd>
+										<dt>smtp</dt>
+										<dd>useltmann/mailcollect:latest</dd>
+									</dl>
+								</td>
+							</tr>
+							<tr>
+								<td class="fragment" data-fragment-index="4">
+									<b>~ 590 MB</b>
+								</td>
+								<td class="fragment" data-fragment-index="3">
+									<b>~ 540 MB</b>
+								</td>
+							</tr>
+						</table>
+					</small>
+					<aside class="notes">
+						<ul>
+							<li>Services klarer definiert</li>
+							<li>bessere Nutzung öffentlicher Basis-Images</li>
+							<li>run-once services für Konfiguration</li>
+							<li>im Idealfall sogar geringerer Speicherbedarf</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3>Benutzung</h3>
+					<small>
+						<table>
+							<tr>
+								<th>alt:</th>
+							</tr>
+							<tr>
+								<td>
+									<pre>$# docker-compose up</pre>
+									<ul>
+										<li>
+											<code>config.ini</code>:
+											<code>Session.type=file</code>
+										</li>
+										<li>Datenbank im Administrations-Backend anlegen</li>
+										<li>hoffen, dass keine Fehlermeldungen auftreten</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<th>neu:</th>
+							</tr>
+							<tr>
+								<td>
+									<pre>$# docker-compose up</pre>
+									<ul>
+										<li>warten</li>
+									</ul>
+								</td>
+							</tr>
+						</table>
+
+					</small>
+					<aside class="notes">
+
+					</aside>
+				</section>
 			</section>
 		</div>
 	</div>
