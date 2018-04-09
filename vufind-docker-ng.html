@@ -26,214 +26,404 @@
 <body>
 	<div class="reveal">
 		<div class="slides">
-			<section class="bigshape">
-				<img data-src="images/vufind-docker-ng/logo.png" height="200px">
-				<h2>VuFind-Docker NG</h2>
-				<dl>
-					<dt>
-						VuFind-Ökosystem mit Docker
-					</dt>
-					<dd>
-						<small>
-							<table>
-								<tr>
-									<th>Autor:</th>
-									<td>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;</td>
-								</tr>
-								<tr>
-									<th>erstellt am:</th>
-									<td>11.04.2018</td>
-								</tr>
-							</table>
-						</small>
-					</dd>
-				</dl>
-			</section>
-			<section class="mediumshape">
-				<h1>Agenda</h1>
-				<ul>
-					<li class="fragment">Lessons learned aus dem ersten Docker-Image</li>
-					<li class="fragment">an VuFind beteiligte Services</li>
-					<li class="fragment">Container-Ökosystem</li>
-					<li class="fragment">Integration in das Workflow</li>
-					</li>
-					<aside class="notes">
-						<small>
-							<ul>
-								<li>welche Fehler wurden beim ersten Docker-Image gemacht</li>
-								<li>VuFind ist ein Zusammenspiel aus diversen Diensten</li>
-								<li>wie sich das neue Ökosystem vom alten unterscheidet</li>
-								<li>wie sich Docker in unser Workflow integrieren lässt</li>
-							</ul>
-						</small>
-					</aside>
-			</section>
-			<section class="mediumshape">
-				<h2>
-					Lessons Learned
-				</h2>
-				<ul>
-					<li class="fragment">unflexibel</li>
-					<li class="fragment">inkompatible Image-Versionen</li>
-					<li class="fragment">Konfigurations-Overhead nicht beseitigt</li>
-				</ul>
-				<aside class="notes">
+			<section>
+				<section class="bigshape">
+					<img data-src="images/vufind-docker-ng/logo.png" height="200px">
+					<h2>VuFind-Docker NG</h2>
+					<dl>
+						<dt>
+							VuFind-Ökosystem mit Docker
+						</dt>
+						<dd>
+							<small>
+								<table>
+									<tr>
+										<th>Autor:</th>
+										<td>Ulf Seltmann &lt;seltmann@ub.uni-leipzig.de&gt;</td>
+									</tr>
+									<tr>
+										<th>erstellt am:</th>
+										<td>11.04.2018</td>
+									</tr>
+								</table>
+							</small>
+						</dd>
+					</dl>
+				</section>
+				<section class="mediumshape">
+					<h1>Agenda</h1>
 					<ul>
-						<li>kein Tausch einzelner Services möglich</li>
-						<li>neues Image zerstörte vorhandene Datenbank</li>
-						<li>Datenbank erstellen war mit erhöhtem Aufwand verbunden</li>
-					</ul>
-				</aside>
+						<li class="fragment">Lessons Learned</li>
+						<li class="fragment">Die Container</li>
+						<li class="fragment">Die Images</li>
+						<li class="fragment">Integration in das Workflow</li>
+						</li>
+						<aside class="notes">
+							<small>
+								<ul>
+									<li>welche Fehler wurden beim ersten Docker-Image gemacht</li>
+									<li>wie sich das neue Ökosystem vom alten unterscheidet</li>
+									<li>wie sich Docker in unser Workflow integrieren lässt</li>
+								</ul>
+							</small>
+						</aside>
+				</section>
 			</section>
-			<section class="mediumshape">
-				<h2>an VuFind beteiligte Services</h2>
-				<ul>
-					<li class="fragment" data-fragment-index="1">PHP</li>
-					<li class="fragment" data-fragment-index="2">Apache2</li>
-					<li class="fragment" data-fragment-index="3">MySQL</li>
-					<li class="fragment" data-fragment-index="4">
-						<span class="fragment semi-fade-out" data-fragment-index="5">Solr</span>
-					</li>
-				</ul>
-				<aside class="notes">
-					<ul>
-						<li>PHP ist der Applikationsserver:
-							<ul>
-								<li>führt VuFind aus und prozessiert Benutzereingaben</li>
-								<li>ist das Bindeglied aller beteiligter Services</li>
-							</ul>
-						</li>
-						<li>Apache2 ist der Webserver:
-							<ul>
-								<li>Schnittstelle zwischen Benutzer und VuFind</li>
-								<li>nimmt Benutzereingaben entgegen</li>
-								<li>gibt Benutzereingaben an VuFind</li>
-								<li>übermittelt statische Inhalte wie Theme und Layout an den Benutzer</li>
-								<li>übermittelt dynamische Inhalte, prozessiert von VuFind an den Benutzer</li>
-							</ul>
-						</li>
-						<li>MySQL ist der Datanbankserver:
-							<ul>
-								<li>benutzerrelevante Inhalte</li>
-								<li>VuFind-spezifische Laufzeitinformationen, wie Sessiondaten</li>
-							</ul>
-						</li>
-						<li>Solr ist der Indexserver:
-							<ul>
-								<li>stellt die eigentlichen Katalog-Informationen zur Verfügung</li>
-								<li>keine Docker-Komponente, da Aufbau zu komplex</li>
-							</ul>
-						</li>
-					</ul>
-				</aside>
-			</section>
-			<section class="mediumshape">
-				<section>
+			<section>
+				<section class="bigshape">
 					<h2>
-						Container-Ökosystem
+						Lessons Learned
 					</h2>
+				</section>
+				<section class="mediumshape">
+					<h3>
+						monolitisch
+					</h3>
+					<div class="fragment">kein Tausch einzelner Services möglich, schwer upgradefähig</div>
+				</section>
+				<section class="mediumshape">
+					<h3>
+						unflexibel
+					</h3>
+					<div class="fragment">nur als Entwicklungsumgebung geeignet</div>
+				</section>
+				<section class="mediumshape">
+					<h3>Configuration Overhead</h3>
+					<div class="fragment">
+						Datenbank erstellen war mit erhöhtem Aufwand verbunden
+					</div>
+				</section>
+				<section class="mediumshape">
+					<h3>Fehleranfällig</h3>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>Anti-Pattern mehrere Dienste in einem Container</li>
+							</ul>
+						</aside>
+						komplizierter Service-Start
+
+					</div>
+				</section>
+			</section>
+			<section>
+				<section class="bigshape">
+					<h2>Die Container</h2>
+					<aside class="notes">
+						Gegenüberstellung der Container
+					</aside>
+				</section>
+				<section class="mediumshape">
+					<h3>
+						das Container-Ökosystem
+					</h3>
 					<aside class="notes">
 						Vergleich des alten mit dem neuen
 					</aside>
-				</section>
-				<section class="smallshape">
-					<h3>Services</h3>
 					<small>
 						<table>
 							<tr>
-								<th>
-									<h3>neu:</h3>
-								</th>
 								<th>
 									<h3>alt:</h3>
 								</th>
+								<th>
+									<h3>neu:</h3>
+								</th>
 							</tr>
 							<tr>
-								<td class="fragment" data-fragment-index="2">
+								<td>
 									<dl>
-										<dt>php</dt>
-										<dd>ubleipzig/vufind-php:5-debug-2</dd>
-										<dt>httpd</dt>
-										<dd>ubleipzig/vufind-httpd:2.4-4</dd>
-										<dt>db</dt>
-										<dd>mariadb:10.2</dd>
-										<dt>smtp</dt>
-										<dd>useltmann/mailcollect:8-1</dd>
-										<dt>grunt</dt>
-										<dd>ubleipzig/vufind-php:5-debug-2</dd>
-										<dt>composer</dt>
-										<dd>ubleipzig/vufind-php:7-debug-2</dd>
-										<dt>autoconfig</dt>
-										<dd>ubleipzig/vufind-php:5-debug-2</dd>
+										<div class="fragment">
+											<aside class="notes">
+												ein Container mit komplettem LAMP-Stack
+												<ul>
+													<li>Dienst-Versionen des zugrundeliegenden Betriebsystems</li>
+													<li>Tools enthalten</li>
+													<li>Konfiguration aller Dienste für Entwicklungszwecke</li>
+												</ul>
+											</aside>
+											<dt>lamp</dt>
+											<dd>ubleipzig/vufind2</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												Postfix/Dovecot als Mailserver:
+												<ul>
+													<li>übernimmt den Test der Mailkomponente</li>
+												</ul>
+											</aside>
+											<dt>smtp</dt>
+											<dd>useltmann/mailcollect</dd>
+										</div>
 									</dl>
 								</td>
-								<td class="fragment" data-fragment-index="1">
+								<td>
 									<dl>
-										<dt>lamp</dt>
-										<dd>ubleipzig/vufind2:php54</dd>
-										<dt>smtp</dt>
-										<dd>useltmann/mailcollect:latest</dd>
+										<div class="fragment">
+											<aside class="notes">
+												Apache2 ist der Webserver:
+												<ul>
+													<li>Schnittstelle zwischen Benutzer und VuFind</li>
+													<li>übermittelt statische Inhalte wie Theme und Layout an den Benutzer</li>
+													<li>übermittelt dynamische Inhalte, prozessiert von VuFind an den Benutzer</li>
+												</ul>
+											</aside>
+											<dt>httpd</dt>
+											<dd>ubleipzig/vufind-httpd</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												MariaDB ist der Datanbankserver:
+												<ul>
+													<li>benutzerrelevante Inhalte</li>
+													<li>VuFind-spezifische Laufzeitinformationen, wie Sessiondaten</li>
+												</ul>
+											</aside>
+											<dt>db</dt>
+											<dd>mariadb</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												Postfix/Dovecot als Mailserver:
+												<ul>
+													<li>übernimmt den Test der Mailkomponente</li>
+												</ul>
+											</aside>
+											<dt>smtp</dt>
+											<dd>useltmann/mailcollect</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												PHP ist der Applikationsserver:
+												<ul>
+													<li>führt VuFind aus und prozessiert Benutzereingaben</li>
+													<li>ist das Bindeglied aller beteiligter Services</li>
+												</ul>
+											</aside>
+											<dt>php</dt>
+											<dd>ubleipzig/vufind-php</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												<ul>
+													<li>erstellt scss-Dateien</li>
+													<li>beobachtet Datei-Änderungen</li>
+												</ul>
+											</aside>
+											<dt>grunt</dt>
+											<dd>ubleipzig/vufind-php</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												<ul>
+													<li>installiert composer-Pakete</li>
+												</ul>
+											</aside>
+											<dt>composer</dt>
+											<dd>ubleipzig/vufind-php</dd>
+										</div>
+										<div class="fragment">
+											<aside class="notes">
+												<ul>
+													<li>konfiguriert VuFind</li>
+												</ul>
+											</aside>
+											<dt>autoconfig</dt>
+											<dd>ubleipzig/vufind-php</dd>
+										</div>
 									</dl>
+									<aside class="notes">
+										ein Container für jeden beteiligten Dienst
+										<ul>
+											<li>Tools eingearbeitet</li>
+											<li>Image-Versionen für Entwicklungs- und Produktivnutzung</li>
+											<li>Nutzung öffentlicher Images</li>
+											<li>
+												Solr ist der Indexserver:
+												<ul>
+													<li>stellt die eigentlichen Katalog-Informationen zur Verfügung</li>
+													<li>keine Docker-Komponente, da Aufbau mit Beispieldaten zu komplex</li>
+												</ul>
+											</li>
+									</aside>
+
+									</ul>
+									</aside>
 								</td>
 							</tr>
 							<tr>
-								<td class="fragment" data-fragment-index="4">
-									<b>~ 590 MB</b>
-								</td>
-								<td class="fragment" data-fragment-index="3">
+								<td class="fragment">
 									<b>~ 540 MB</b>
+									<aside class="notes">
+										<ul>
+											<li>zwei Container</li>
+											<li>zwei Images</li>
+										</ul>
+									</aside>
+								</td>
+								<td class="fragment">
+									<b>~ 430 MB</b>
+									<aside class="notes">
+										<ul>
+											<li>sieben Container</li>
+											<li>vier Images</li>
+										</ul>
+									</aside>
 								</td>
 							</tr>
 						</table>
 					</small>
-					<aside class="notes">
-						<ul>
-							<li>Services klarer definiert</li>
-							<li>bessere Nutzung öffentlicher Basis-Images</li>
-							<li>run-once services für Konfiguration</li>
-							<li>im Idealfall sogar geringerer Speicherbedarf</li>
-						</ul>
-					</aside>
-				</section>
-				<section>
-					<h3>Benutzung</h3>
-					<small>
-						<table>
-							<tr>
-								<th>alt:</th>
-							</tr>
-							<tr>
-								<td>
-									<pre>$# docker-compose up</pre>
-									<ul>
-										<li>
-											<code>config.ini</code>:
-											<code>Session.type=file</code>
-										</li>
-										<li>Datenbank im Administrations-Backend anlegen</li>
-										<li>hoffen, dass keine Fehlermeldungen auftreten</li>
-									</ul>
-								</td>
-							</tr>
-							<tr>
-								<th>neu:</th>
-							</tr>
-							<tr>
-								<td>
-									<pre>$# docker-compose up</pre>
-									<ul>
-										<li>warten</li>
-									</ul>
-								</td>
-							</tr>
-						</table>
-
-					</small>
-					<aside class="notes">
-
-					</aside>
 				</section>
 			</section>
+			<section>
+				<section class="bigshape">
+					<h2>Die Images</h2>
+				</section>
+				<section class="mediumshape">
+					<aside class="notes">
+						Webserver für VuFind
+					</aside>
+					<h3>ubleipzig/vufind-httpd</h3>
+					<ul>
+						<li class="fragment">
+							<aside class="notes">
+								<li>basiert auf offiziellem httpd-Image</li>
+								<li>startet httpd-prozess mit auf VuFind angepasster Konfiguration</li>
+							</aside>
+							startet Dienst
+							<code>httpd-foreground</code>
+						</li>
+						<li class="fragment">
+							<aside class="notes">
+								ersetzbar durch alternativen Webserver
+							</aside>
+							ersetzbar durch
+							<code>ubleipzig/vufind-nginx</code>-Image
+						</li>
+					</ul>
+				</section>
+				<section class="mediumshape">
+					<aside class="notes">
+						Datenbankserver für VuFind
+					</aside>
+					<h3>mariadb</h3>
+					<ul>
+						<li class="fragment">
+							<aside class="notes">
+								<li>offizielles Image</li>
+								<li>startet mariadb-prozess</li>
+							</aside>
+							startet Dienst
+							<code>mysqld</code>
+						</li>
+						<li class="fragment">
+							<aside class="notes">
+								ersetzbar durch alternativen Datenbankserver
+							</aside>
+							ersetzbar durch offizielles mysql-Image
+						</li>
+					</ul>
+				</section>
+				<section class="mediumshape">
+					<aside class="notes">
+						Test-Mailserver für VuFind
+					</aside>
+					<h3>useltmann/mailcollect</h3>
+					<ul>
+						<li class="fragment">
+							<aside class="notes">
+								<li>wird zu Testzwecken verwendet</li>
+								<li>startet postfix-Prozess</li>
+								<li>startet dovecot-Prozess</li>
+							</aside>
+							startet Mailserver für Testzwecke
+						</li>
+					</ul>
+				</section>
+				<section class="mediumshape">
+					<aside class="notes">
+						Application Server
+						<ul>
+							<li>basiert auf offiziellem PHP-Image</li>
+							<li>+ PHP-Erweiterungen für VuFind</li>
+							<li>+ Setup-Tools</li>
+							<li>Debug-Variante für Entwicklungszweck</li>
+						</ul>
+					</aside>
+					<h3>ubleipzig/vufind-php</h3>
+					<ul>
+						<li class="fragment">
+							<aside class="notes">
+								startet application server
+							</aside>
+							<code>php-fpm</code>
+						</li>
+						<li class="fragment">
+							<aside class="notes">
+								<ul>
+									<li>installiert composer-Abhängigkeiten</li>
+
+								</ul>
+							</aside>
+							<code>phing composer</code>
+						</li>
+						<li class="fragment">
+							<aside class="notes">
+								<ul>
+									<li>kompiliert SCSS-Dateien via Grunt</li>
+									<li>beobachtet Änderungen</li>
+								</ul>
+							</aside>
+							<code>grunt watch</code>
+						</li>
+						<li class="fragment">
+							<aside class="notes">
+								<ul>
+									<li>konfiguriert vufind</li>
+								</ul>
+							</aside>
+							<code>autoconfig vufind deploy</code>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section>
+				<section class="bigshape">
+					<h2>Integration in das Workflow</h2>
+				</section>
+				<section class="mediumshape">
+					<h3>Start der Container-Umgebung</h3>
+					<aside class="notes">
+						<ul>
+							<li>startet alle container</li>
+							<li>Setup-Container beenden nach ihrem Lauf</li>
+							<li>Service-Container bleiben aktiv</li>
+						</ul>
+					</aside>
+					<pre><code>
+$# docker-compose up
+					</code></pre>
+					<ul>
+						<li>startet alle Container</li>
+						<li>Setup-Container beenden nach ihrem Lauf</li>
+						<li>Service-Container bleiben aktiv</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Stop der Container-Umgebung</h3>
+					<ul>
+						<li>Ctrl-C auf den <i>docker-compose</i> Start-Prozess</li>
+					</ul>
+				</section>
+				<section>
+						<h3>Reset der Container-Umgebung</h3>
+
+						<ul>
+							<li></li>
+						</ul>
+					</section>
+				</section>
+
 		</div>
 	</div>
 
