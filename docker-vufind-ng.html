@@ -8,7 +8,7 @@
 	<title>reveal.js</title>
 
 	<link rel="stylesheet" href="css/reveal.css">
-	<link rel="stylesheet" href="css/theme/vufind-docker-ng.css">
+	<link rel="stylesheet" href="css/theme/docker-vufind-ng.css">
 
 	<!-- Theme used for syntax highlighting of code -->
 	<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -28,8 +28,8 @@
 		<div class="slides">
 			<section>
 				<section class="bigshape">
-					<img data-src="images/vufind-docker-ng/logo.png" height="200px">
-					<h2>VuFind-Docker NG</h2>
+					<img data-src="images/docker-vufind-ng/logo.png" height="200px">
+					<h2>Docker-VuFind NG</h2>
 					<dl>
 						<dt>
 							VuFind-Ökosystem mit Docker
@@ -57,6 +57,7 @@
 						<li class="fragment">Die Container</li>
 						<li class="fragment">Die Images</li>
 						<li class="fragment">Integration in das Workflow</li>
+						<li class="fragment">Live-Demo</li>
 						</li>
 						<aside class="notes">
 							<small>
@@ -118,7 +119,7 @@
 						das Container-Ökosystem
 					</h3>
 					<aside class="notes">
-						Vergleich des alten mit dem neuen
+						Ökosystem meint den Verbund mehrerer Container
 					</aside>
 					<small>
 						<table>
@@ -206,7 +207,7 @@
 										<div class="fragment">
 											<aside class="notes">
 												<ul>
-													<li>erstellt scss-Dateien</li>
+													<li>erstellt css-Dateien</li>
 													<li>beobachtet Datei-Änderungen</li>
 												</ul>
 											</aside>
@@ -272,6 +273,154 @@
 								</td>
 							</tr>
 						</table>
+					</small>
+				</section>
+				<section class="mediumshape">
+					<h4>httpd</h4>
+					<aside class="notes">
+						<ul>
+							<li>erreichbar über Port 80</li>
+							<li>bindet vufind-Ordner und Cache-Ordner read-only</li>
+						</ul>
+					</aside>
+					<pre><code data-trim data-noescape class="yaml">
+  image: ubleipzig/vufind-httpd:2.4-4
+  ports:
+    - 80:80
+  volumes:
+    - ./:/usr/local/vufind:ro
+    - ./data/cache:/var/cache/vufind:ro
+  depends_on:
+    - php
+					</code></pre>
+				</section>
+				<section class="mediumshape">
+					<h4>db</h4>
+					<aside class="notes">
+						<ul>
+							<li>erreichbar über Port 3306</li>
+							<li>Daten-Volume für Datenbank-Dateien</li>
+							<li>Root-Passwort über Umgebungsvariable festgelegt</li>
+						</ul>
+					</aside>
+					<pre><code data-trim data-noescape class="yaml">
+  image: mariadb:10.2
+  ports:
+    - 127.0.0.1:3306:3306
+  volumes:
+    - mariadb-data:/var/lib/mysql:z
+  environment:
+    MYSQL_ROOT_PASSWORD: adminpw
+  command:
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci
+					</code></pre>
+				</section>
+				<section class="mediumshape">
+					<h4>smtp</h4>
+					<aside class="notes">
+						<ul>
+							<li>erreichbar über Ports 25 und 143</li>
+							<li>Daten-Volume für Emails</li>
+						</ul>
+					</aside>
+					<pre><code data-trim data-noescape class="yaml">
+  image: useltmann/mailcollect:8-1
+  ports:
+    - '143:143'
+    - '25:25'
+  volumes:
+    - mail-data:/home/dev/Maildir:z
+						</code></pre>
+				</section>
+				<section class="mediumshape">
+					<h4>php</h4>
+					<aside class="notes">
+						<ul>
+							<li>bindet lokalen Ordner als VuFind-Ordner ein</li>
+							<li>konfiguriert Config-Ordner und Cache-Ordner</li>
+							<li>konfiguriert Module</li>
+							<li>konfiguriert Umgebungstyp</li>
+						</ul>
+					</aside>
+					<pre><code data-trim data-noescape class="yaml">
+  image: ubleipzig/vufind-php:5-debug-2
+  volumes:
+    - ./:/usr/local/vufind
+  environment:
+    VUFIND_LOCAL_DIR: /usr/local/vufind/de_15/dev
+    VUFIND_CACHE_DIR: /usr/local/vufind/data/cache
+    VUFIND_LOCAL_MODULES: finc,de_15
+    VUFIND_ENV: development
+					</code></pre>
+				</section>
+				<section class="mediumshape">
+					<h4>grunt</h4>
+					<aside class="notes">
+						<ul>
+							<li>bindet lokalen Ordner als VuFind-Ordner ein</li>
+							<li>installiert node-abhängigkeiten</li>
+							<li>startet grunt als watch-prozess</li>
+						</ul>
+					</aside>
+					<pre><code data-trim data-noescape class="yaml">
+  image: ubleipzig/vufind-php:5-debug-2
+  volumes:
+    - ./:/usr/local/vufind:z
+  environment:
+    NODE_ENV: development
+  command: npm install && node_modules/.bin/grunt watch
+					</code></pre>
+				</section>
+				<section class="mediumshape">
+					<h4>composer</h4>
+					<aside class="notes">
+						<ul>
+							<li>bindet lokalen Ordner als VuFind-Ordner ein</li>
+							<li>startet composer-installation via vufind phing-task</li>
+						</ul>
+					</aside>
+					<pre><code data-trim data-noescape class="yaml">
+  image: ubleipzig/vufind-php:7-debug-2
+  volumes:
+    - ./:/usr/local/vufind:z
+  command: phing composer
+					</code></pre>
+				</section>
+				<section class="mediumshape">
+					<h4>autoconfig</h4>
+					<aside class="notes">
+						<ul>
+							<li>bindet lokalen Ordner als VuFind-Ordner ein</li>
+							<li>erstellt VuFind-Konfiguration anhand der Parameter</li>
+							<li>verzögerter Aufruf, um Datenbank-Initialisierng abzuwarten</li>
+						</ul>
+					</aside>
+					<small>
+						<pre><code data-trim data-noescape class="yaml">
+  image: ubleipzig/vufind-php:5-debug-2
+  volumes:
+    - ./:/usr/local/vufind:z
+  environment:
+    VUFIND_SITE: de_15
+    VUFIND_INSTANCE: dev
+    VUFIND_SKIP_GRUNT: "true"
+    VUFIND_SKIP_COMPOSER: "true"
+    VUFIND_DB_CLIENT: "%"
+    VUFIND_DB_ADMIN_PASSWORD: adminpw
+    VF_config_ini__Authentication__hash_passwords: "true"
+    VF_config_ini__Authentication__encrypt_ils_password: "true"
+    VF_config_ini__Database__database: mysql://vufind:vufindpw@db/vufind
+    VF_config_ini__Index__url: http://172.18.113.12:8080/solr
+    VF_config_ini__Mail__host: smtp
+    VF_config_ini__Mail__port: 25
+    VF_config_ini__Mail__username: dev
+    VF_config_ini__Mail__pasword: dev
+    VF_config_ini__Http__sslverifypeer: "false"
+  command: sleep 10 && autoconfig vufind deploy
+    depends_on:
+      - db
+					</code></pre>
 					</small>
 				</section>
 			</section>
@@ -392,38 +541,220 @@
 					<h2>Integration in das Workflow</h2>
 				</section>
 				<section class="mediumshape">
-					<h3>Start der Container-Umgebung</h3>
+					<h3>Start der Container</h3>
+					<aside class="notes">
+						kein Unterschied zum bisherigen Vorgehen
+					</aside>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>startet im Vordergrund und blockiert die Console</li>
+								<li>Ausgabe aller Container folgt in der Console</li>
+							</ul>
+						</aside>
+						<pre><code data-trim data-noescape class="bash">$ docker-compose up</code></pre>
+						<small class="fragment">
+							<ul>
+								<li>startet alle Container</li>
+								<li>Setup-Container beenden nach ihrem Lauf</li>
+								<li>Service-Container bleiben aktiv</li>
+							</ul>
+						</small>
+					</div>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>startet alle Container im Hintergrund</li>
+								<li>console wird nicht blockiert</li>
+								<li>keine Log-Ausgabe der startenden Container</li>
+							</ul>
+						</aside>
+						<pre><code data-trim data-noescape class="bash">$ docker-compose up -d</code></pre>
+					</div>
+				</section>
+				<section class="mediumshape">
+					<h3>Stop der Container-Umgebung</h3>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>In Console mit im Vordergrund laufendem
+									<i>docker-compose up</i>
+								</li>
+							</ul>
+						</aside>
+						<code>Ctrl-C</code>
+					</div>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>wenn im Hintergrund gestartet</li>
+								<li>funktioniert auch, wenn in anderer Console im Vordergrund laufend</li>
+							</ul>
+						</aside>
+						<pre><code data-trim data-noescape class="bash">$ docker-compose down</code></pre>
+					</div>
+				</section>
+				<section class="mediumshape">
+					<h3>Reset der Container-Umgebung</h3>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>stoppt und entfernt alle Container, Daten-Volumes und Netzwerke</li>
+							</ul>
+						</aside>
+						<pre><code data-trim data-noescape class="bash">$ docker-compose down -v</code></pre>
+						<small>
+							<ul>
+								<li>
+									entfernt alle Container, Volumes und Netzwerke
+								</li>
+							</ul>
+						</small>
+
+					</div>
+					<div class="fragment">
+						<aside class="notes">
+							<ul>
+								<li>entfernt alle nicht verfolgten Dateien</li>
+							</ul>
+						</aside>
+						<pre><code data-trim data-noescape class="bash">$ git clean -fdx</code></pre>
+						<small>
+							<ul>
+								<li>
+									entferne alle unversionierten Dateien
+								</li>
+							</ul>
+						</small>
+					</div>
+				</section>
+				<section class="mediumshape">
+					<h3>Logs überwachen</h3>
 					<aside class="notes">
 						<ul>
-							<li>startet alle container</li>
-							<li>Setup-Container beenden nach ihrem Lauf</li>
-							<li>Service-Container bleiben aktiv</li>
+							<li>-f folgt der Ausgabe der Container</li>
+							<li>mehrere Container angebbar</li>
 						</ul>
 					</aside>
-					<pre><code>
-$# docker-compose up
-					</code></pre>
-					<ul>
-						<li>startet alle Container</li>
-						<li>Setup-Container beenden nach ihrem Lauf</li>
-						<li>Service-Container bleiben aktiv</li>
-					</ul>
+					<div class="fragment">
+						<pre><code data-trim data-noescape class="bash">$ docker-compose logs -f</code></pre>
+						<small>
+							<ul>
+								<li>
+									zeige Ausgabe aller Container
+								</li>
+							</ul>
+						</small>
+					</div>
+					<div class="fragment">
+						<pre><code data-trim data-noescape class="bash">$ docker-compose logs -f php</code></pre>
+						<small>
+							<ul>
+								<li>
+									zeige Ausgabe des PHP-Containers
+								</li>
+							</ul>
+						</small>
+					</div>
+					<div class="fragment">
+						<pre><code data-trim data-noescape class="bash">$ docker-compose logs -f grunt</code></pre>
+						<small>
+							<ul>
+								<li>
+									zeige Ausgabe des Grunt-Containers
+								</li>
+							</ul>
+						</small>
+					</div>
+					<div class="fragment">
+						...
+					</div>
 				</section>
-				<section>
-					<h3>Stop der Container-Umgebung</h3>
-					<ul>
-						<li>Ctrl-C auf den <i>docker-compose</i> Start-Prozess</li>
-					</ul>
-				</section>
-				<section>
-						<h3>Reset der Container-Umgebung</h3>
-
+				<section class="mediumshape">
+					<h3>Prozesse ausführen</h3>
+					<aside class="notes">
 						<ul>
-							<li></li>
+							<li>--rm löscht Container, wenn ausgeführter Prozess beendet</li>
 						</ul>
-					</section>
+					</aside>
+					<div class="fragment">
+						<pre><code data-trim data-noescape class="bash">$ docker-compose run --rm php phing phpunit</code></pre>
+						<small>
+							<ul>
+								<li>
+									PHP-Unit
+								</li>
+							</ul>
+						</small>
+					</div>
+					<div class="fragment">
+						<pre><code data-trim data-noescape class="bash">$ docker-compose run --rm php phing phpcs</code></pre>
+						<small>
+							<ul>
+								<li>
+									PHP-CS
+								</li>
+							</ul>
+						</small>
+					</div>
+					<div class="fragment">
+						<pre><code data-trim data-noescape class="bash">$ docker-compose run --rm php phing -l</code></pre>
+						<small>
+							<ul>
+								<li>
+									zeige verfügbare Tasks
+								</li>
+							</ul>
+						</small>
+					</div>
 				</section>
-
+			</section>
+			<section>
+				<section class="bigshape">
+					<h2>Live-Demo</h2>
+					<aside class="notes">
+						<ul>
+							<li>neuen branch von instance/de_15 erstellen</li>
+							<li>issue/12914 mergen, Konflikte auflösen</li>
+							<li>vendor-Ordner löschen</li>
+							<li>node_modules-Ordner löschen</li>
+							<li>local/dev-Ordner löschen</li>
+							<li>de_15/dev-Ordner löschen</li>
+							<li>docker-compose.yml anpassen:
+								<ul>
+									<li>VUFIND_LOCAL_DIR</li>
+									<li>VUFIND_LOCAL_MODULES</li>
+									<li>VUFIND_SITE</li>
+									<li>VF_config_ini__Http__sslverifypeer</li>
+								</ul>
+							</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section>
+				<section class="bigshape">
+					<h2>Ende</h2>
+					<small>
+						<dl>
+							<dt>docker-vufind</dt>
+							<dd>https://git.sc.uni-leipzig.de/ubl/bdd_dev/docker-vufind</dd>
+							<dt>ubleipzig/vufind2</dt>
+							<dd>https://hub.docker.com/r/ubleipzig/vufind2/</dd>
+							<dt>useltmann/mailcollect</dt>
+							<dd>https://hub.docker.com/r/useltmann/mailcollect/</dd>
+							<dt>ubleipzig/vufind-httpd</dt>
+							<dd>https://hub.docker.com/r/ubleipzig/vufind-httpd/</dd>
+							<dt>ubleipzig/vufind-php</dt>
+							<dd>https://hub.docker.com/r/ubleipzig/vufind-php/</dd>
+							<dt>mariadb</dt>
+							<dd>https://hub.docker.com/_/mariadb/</dd>
+							<dt>autoconfig</dt>
+							<dd>https://ubleipzig.github.io/autoconfig</dd>
+						</dl>
+					</small>
+				</section>
+			</section>
 		</div>
 	</div>
 
